@@ -41,13 +41,7 @@ export default function Home() {
           <div className="text-center text-white">
             <h1 className="text-7xl font-bold mb-2">CheckInOut</h1>
             <p className="mt-8">
-              CheckInOut is your comprehensive solution for managing security
-              guard check-ins and equipment. Our intuitive platform simplifies
-              the process, allowing you to streamline your security operations
-              effortlessly. With CheckInOut, you can efficiently track guard
-              rotations, assign equipment, and ensure compliance with ease.
-              Experience seamless management and heightened security with
-              CheckInOut today.
+              CheckInOut is your comprehensive solution for managing security guard check-ins equipment. Our intuitive platform simplifies the process, allowing you to streamline your security operations effortlessly. With CheckInOut, you can efficiently track guard rotations, assign equipment, and ensure compliance with ease. Experience seamless management and heightened security with CheckInOut today.
             </p>
           </div>
         </div>
