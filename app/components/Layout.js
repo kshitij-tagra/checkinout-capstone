@@ -49,7 +49,15 @@ const Layout = ({ children }) => {
         currentView={currentView}
       />
 
-      <div className="flex flex-1 bg-gray-200">{renderContent()}</div>
+      <div className="flex flex-1 relative">
+        <div
+          className="absolute inset-0 bg-cover bg-center filter blur-sm"
+          style={{ backgroundImage: "url('/background.jpg')" }}
+        ></div>
+        <div className="relative flex-1 bg-gray-300 bg-opacity-20">
+          {renderContent()}
+        </div>
+      </div>
 
       <Footer />
 
