@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import GuardList from "../components/GuardList";
-import GuardForm from "../components/GuardForm";
+import GuardSignInForm from "../components/GuardSignInForm";
 import GuardSearch from "../components/GuardSearch";
 
 const SignIn = () => {
@@ -64,7 +64,7 @@ const SignIn = () => {
 
       {/* Guard Sign-In Form */}
       {selectedGuard && (
-        <GuardForm
+        <GuardSignInForm
           guard={selectedGuard}
           onSubmit={handleSubmit}
           onCancel={handleCancel}

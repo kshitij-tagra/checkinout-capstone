@@ -1,6 +1,6 @@
 import React from "react";
 
-const GuardForm = ({ guard, onSubmit, onCancel }) => {
+const GuardSignInForm = ({ guard, onSubmit, onCancel }) => {
   return (
     <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
       <h2 className="text-xl font-bold mb-4">Signing in "{guard.name}"</h2>
@@ -261,4 +261,4 @@ const GuardForm = ({ guard, onSubmit, onCancel }) => {
   );
 };
 
-export default GuardForm;
+export default GuardSignInForm;
