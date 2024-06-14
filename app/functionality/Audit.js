@@ -1,9 +1,10 @@
 import React from "react";
+import EquipmentAuditForm from "../components/EquipmentAuditForm";
 
 const Audit = () => (
-  <div>
-    <h1>Audit</h1>
-    {/* Add Audit form and functionality here */}
+  <div className="p-4 w-full">
+    <h1 className="text-2xl font-bold text-center mb-4">- Audit Equipment -</h1>
+    <EquipmentAuditForm />
   </div>
 );
 
