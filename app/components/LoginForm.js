@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const LoginForm = () => {
@@ -41,7 +42,8 @@ const LoginForm = () => {
           className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
           type="button"
         >
-          Sign In
+          <Link href="/pages/homepage">Sign In</Link>
+          {/* Temporary link to page */}
         </button>
       </div>
     </form>
