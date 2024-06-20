@@ -25,19 +25,19 @@ const NavBar = ({
       <div className="bg-black py-2 px-6 rounded-full flex justify-evenly w-full">
         <button
           className={`focus:outline-none text-gray-200 hover:text-white font-semibold hover:font-extrabold ${
-            currentView === "SignIn" ? "text-white font-extrabold" : ""
+            currentView === "CheckIn" ? "text-white font-extrabold" : ""
           }`}
-          onClick={() => setCurrentView("SignIn")}
+          onClick={() => setCurrentView("CheckIn")}
         >
-          Sign In
+          Check In
         </button>
         <button
           className={`focus:outline-none text-gray-200 hover:text-white font-semibold hover:font-extrabold ${
-            currentView === "SignOut" ? "text-white font-extrabold" : ""
+            currentView === "CheckOut" ? "text-white font-extrabold" : ""
           }`}
-          onClick={() => setCurrentView("SignOut")}
+          onClick={() => setCurrentView("CheckOut")}
         >
-          Sign Out
+          Check Out
         </button>
         <button
           className={`focus:outline-none text-gray-200 hover:text-white font-semibold hover:font-extrabold ${
@@ -63,7 +63,7 @@ const NavBar = ({
         />
       </button>
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg">
+        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
           <button className="block py-2 px-4 text-gray-800 hover:bg-gray-200 w-full text-left focus:outline-none">
             Sign In Report
           </button>

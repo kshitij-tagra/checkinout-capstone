@@ -1,9 +1,9 @@
 import React from "react";
 
-const GuardSignOutForm = ({ guard, onSubmit, onCancel }) => {
+const GuardCheckOutForm = ({ guard, onSubmit, onCancel }) => {
   return (
     <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Signing out "{guard.name}"</h2>
+      <h2 className="text-xl font-bold mb-4">Checking out "{guard.name}"</h2>
       <form onSubmit={onSubmit}>
         <table className="w-full">
           <tbody>
@@ -19,7 +19,8 @@ const GuardSignOutForm = ({ guard, onSubmit, onCancel }) => {
                   </div>
                   <div>
                     <label>
-                      <input type="radio" name="camsat" value="no" /> Not Returned
+                      <input type="radio" name="camsat" value="no" /> Not
+                      Returned
                     </label>
                   </div>
                 </div>
@@ -42,7 +43,8 @@ const GuardSignOutForm = ({ guard, onSubmit, onCancel }) => {
                   </div>
                   <div>
                     <label>
-                      <input type="radio" name="radioPouch" value="no" /> Not Returned
+                      <input type="radio" name="radioPouch" value="no" /> Not
+                      Returned
                     </label>
                   </div>
                 </div>
@@ -65,7 +67,8 @@ const GuardSignOutForm = ({ guard, onSubmit, onCancel }) => {
                   </div>
                   <div>
                     <label>
-                      <input type="radio" name="cuffNumber" value="no" /> Not Returned
+                      <input type="radio" name="cuffNumber" value="no" /> Not
+                      Returned
                     </label>
                   </div>
                 </div>
@@ -88,7 +91,8 @@ const GuardSignOutForm = ({ guard, onSubmit, onCancel }) => {
                   </div>
                   <div>
                     <label>
-                      <input type="radio" name="casualVest" value="no" /> Not Returned
+                      <input type="radio" name="casualVest" value="no" /> Not
+                      Returned
                     </label>
                   </div>
                 </div>
@@ -111,7 +115,8 @@ const GuardSignOutForm = ({ guard, onSubmit, onCancel }) => {
                   </div>
                   <div>
                     <label>
-                      <input type="radio" name="casualEarplugs" value="no" /> Not Returned
+                      <input type="radio" name="casualEarplugs" value="no" />{" "}
+                      Not Returned
                     </label>
                   </div>
                 </div>
@@ -152,4 +157,4 @@ const GuardSignOutForm = ({ guard, onSubmit, onCancel }) => {
   );
 };
 
-export default GuardSignOutForm;
+export default GuardCheckOutForm;

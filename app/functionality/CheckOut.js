@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-import GuardList from "../components/GuardList";
-import GuardSignInForm from "../components/GuardSignInForm";
+import React, { useState, useEffect } from "react";
 import GuardSearch from "../components/GuardSearch";
+import GuardList from "../components/GuardList";
+import GuardCheckOutForm from "../components/GuardCheckOutForm";
 
-const SignIn = () => {
-  // Temporary list of guards
-  const guards = [
+const CheckOut = () => {
+  // Temporary mock data for signed-in guards
+  const signedInGuards = [
     { id: 1, name: "John Doe", corpsId: "12345" },
     { id: 2, name: "Jane Smith", corpsId: "67890" },
-    { id: 3, name: "Alice Johnson", corpsId: "54321" },
-    { id: 4, name: "Bob Brown", corpsId: "98765" },
     // Add more guards as needed
   ];
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [filteredGuards, setFilteredGuards] = useState(signedInGuards);
   const [selectedGuard, setSelectedGuard] = useState(null);
 
   // Function to handle search query change
@@ -35,22 +34,27 @@ const SignIn = () => {
   // Function to handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle guard sign-in logic here
-    console.log("Guard signed in:", selectedGuard);
+    // Handle guard sign-out logic here
+    console.log("Guard signed out:", selectedGuard);
     setSelectedGuard(null);
   };
 
-  // Filter guards based on search query
-  const filteredGuards = guards.filter(
-    (guard) =>
-      guard.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      guard.corpsId.includes(searchQuery)
-  );
+  useEffect(() => {
+    // Filter guards based on search query
+    setFilteredGuards(
+      signedInGuards.filter(
+        (guard) =>
+          guard.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          guard.corpsId.includes(searchQuery)
+      )
+    );
+  }, [searchQuery]);
 
   return (
     <div className="p-4 w-full">
-      <h1 className="text-2xl font-bold text-center mb-4">- Sign In Guard -</h1>
-
+      <h1 className="text-2xl font-bold text-center mb-4">
+        - Check Out Guard -
+      </h1>
       {/* Search Bar */}
       <GuardSearch
         searchQuery={searchQuery}
@@ -62,9 +66,9 @@ const SignIn = () => {
         <GuardList guards={filteredGuards} onSelectGuard={handleGuardSelect} />
       )}
 
-      {/* Guard Sign-In Form */}
+      {/* Guard Sign-Out Form */}
       {selectedGuard && (
-        <GuardSignInForm
+        <GuardCheckOutForm
           guard={selectedGuard}
           onSubmit={handleSubmit}
           onCancel={handleCancel}
@@ -74,4 +78,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default CheckOut;

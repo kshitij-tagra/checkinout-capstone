@@ -1,9 +1,9 @@
 import React from "react";
 
-const GuardSignInForm = ({ guard, onSubmit, onCancel }) => {
+const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
   return (
     <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Signing in "{guard.name}"</h2>
+      <h2 className="text-xl font-bold mb-4">Checking in "{guard.name}"</h2>
       <form onSubmit={onSubmit}>
         <table className="w-full">
           <tbody>
@@ -261,4 +261,4 @@ const GuardSignInForm = ({ guard, onSubmit, onCancel }) => {
   );
 };
 
-export default GuardSignInForm;
+export default GuardCheckInForm;

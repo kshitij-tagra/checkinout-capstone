@@ -3,14 +3,14 @@ import Footer from "./Footer";
 import ProfileSidebar from "./ProfileSidebar";
 import TopBar from "./TopBar";
 import NavBar from "./NavBar";
-import SignIn from "../functionality/SignIn";
-import SignOut from "../functionality/SignOut";
+import CheckIn from "../functionality/CheckIn";
+import CheckOut from "../functionality/CheckOut";
 import Audit from "../functionality/Audit";
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentView, setCurrentView] = useState("SignIn");
+  const [currentView, setCurrentView] = useState("CheckIn");
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
@@ -26,14 +26,14 @@ const Layout = ({ children }) => {
 
   const renderContent = () => {
     switch (currentView) {
-      case "SignIn":
-        return <SignIn />;
-      case "SignOut":
-        return <SignOut />;
+      case "CheckIn":
+        return <CheckIn />;
+      case "CheckOut":
+        return <CheckOut />;
       case "Audit":
         return <Audit />;
       default:
-        return <SignIn />;
+        return <CheckIn />;
     }
   };
 
@@ -54,7 +54,7 @@ const Layout = ({ children }) => {
           className="absolute inset-0 bg-cover bg-center filter blur-sm"
           style={{ backgroundImage: "url('/background.jpg')" }}
         ></div>
-        <div className="relative flex-1 bg-gray-300 bg-opacity-20">
+        <div className="relative flex-1 bg-gray-300 bg-opacity-5">
           {renderContent()}
         </div>
       </div>

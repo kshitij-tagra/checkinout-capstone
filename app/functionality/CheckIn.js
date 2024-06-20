@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
-import GuardSearch from "../components/GuardSearch";
+import React, { useState } from "react";
 import GuardList from "../components/GuardList";
-import GuardSignOutForm from "../components/GuardSignOutForm";
+import GuardCheckInForm from "../components/GuardCheckInForm";
+import GuardSearch from "../components/GuardSearch";
 
-const SignOut = () => {
-  // Temporary mock data for signed-in guards
-  const signedInGuards = [
+const CheckIn = () => {
+  // Temporary list of guards
+  const guards = [
     { id: 1, name: "John Doe", corpsId: "12345" },
     { id: 2, name: "Jane Smith", corpsId: "67890" },
+    { id: 3, name: "Alice Johnson", corpsId: "54321" },
+    { id: 4, name: "Bob Brown", corpsId: "98765" },
     // Add more guards as needed
   ];
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredGuards, setFilteredGuards] = useState(signedInGuards);
   const [selectedGuard, setSelectedGuard] = useState(null);
 
   // Function to handle search query change
@@ -34,27 +35,24 @@ const SignOut = () => {
   // Function to handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle guard sign-out logic here
-    console.log("Guard signed out:", selectedGuard);
+    // Handle guard sign-in logic here
+    console.log("Guard signed in:", selectedGuard);
     setSelectedGuard(null);
   };
 
-  useEffect(() => {
-    // Filter guards based on search query
-    setFilteredGuards(
-      signedInGuards.filter(
-        (guard) =>
-          guard.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          guard.corpsId.includes(searchQuery)
-      )
-    );
-  }, [searchQuery]);
+  // Filter guards based on search query
+  const filteredGuards = guards.filter(
+    (guard) =>
+      guard.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      guard.corpsId.includes(searchQuery)
+  );
 
   return (
     <div className="p-4 w-full">
       <h1 className="text-2xl font-bold text-center mb-4">
-        - Sign Out Guard -
+        - Check In Guard -
       </h1>
+
       {/* Search Bar */}
       <GuardSearch
         searchQuery={searchQuery}
@@ -66,9 +64,9 @@ const SignOut = () => {
         <GuardList guards={filteredGuards} onSelectGuard={handleGuardSelect} />
       )}
 
-      {/* Guard Sign-Out Form */}
+      {/* Guard Sign-In Form */}
       {selectedGuard && (
-        <GuardSignOutForm
+        <GuardCheckInForm
           guard={selectedGuard}
           onSubmit={handleSubmit}
           onCancel={handleCancel}
@@ -78,4 +76,4 @@ const SignOut = () => {
   );
 };
 
-export default SignOut;
+export default CheckIn;
