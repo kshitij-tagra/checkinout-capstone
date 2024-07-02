@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const EquipmentAuditForm = () => {
   const currentDate = new Date().toLocaleDateString();
@@ -50,7 +50,7 @@ const EquipmentAuditForm = () => {
   };
 
   return (
-    <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
+    <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-3/4 mx-auto">
       <h2 className="text-xl font-bold mb-4">Audit for: {currentDate}</h2>
       <form onSubmit={handleSubmit}>
         <table className="w-full">
