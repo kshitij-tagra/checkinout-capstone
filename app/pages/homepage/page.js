@@ -1,7 +1,9 @@
 "use client";
 
-import Layout from "@/app/components/Layout";
+import Layout from "../../components/Layout";
 
-export default function Home() {
+const Homepage = () => {
   return <Layout />;
-}
+};
+
+export default Homepage;

@@ -1,4 +1,5 @@
 import React from "react";
+import { useUserAuth } from "../_utils/auth-context";
 
 const ProfileSidebar = ({ onClose }) => {
   // Sample data for profile details
@@ -10,9 +11,16 @@ const ProfileSidebar = ({ onClose }) => {
     email: "john.doe@example.com",
   };
 
-  const handleLogout = () => {
-    // Add your logout logic here
-    console.log("Logging out...");
+  const { signOutUser } = useUserAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      console.log("Logged out successfully");
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (

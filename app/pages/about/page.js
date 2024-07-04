@@ -1,6 +1,6 @@
 import Footer from "../../components/Footer";
 
-export default function Terms() {
+const About = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex flex-1 justify-center items-center p-10">
@@ -10,4 +10,6 @@ export default function Terms() {
       <Footer />
     </div>
   );
-}
+};
+
+export default About;
