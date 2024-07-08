@@ -8,7 +8,7 @@ const GuardList = ({ guards, onSelectGuard }) => {
           guards.map((guard) => (
             <div
               key={guard.id}
-              className="p-2 border-b last:border-b-0 border-gray-400 cursor-pointer"
+              className="p-2 border-b last:border-b-0 border-gray-400 cursor-pointer bg-white hover:font-semibold transition-all ease-in-out hover:bg-blue-500 hover:text-white"
               onClick={() => onSelectGuard(guard)}
             >
               {guard.name} (#{guard.corpsId})
