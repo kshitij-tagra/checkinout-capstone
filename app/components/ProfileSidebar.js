@@ -1,5 +1,6 @@
 import React from "react";
 import { useUserAuth } from "../_utils/auth-context";
+import { auth } from "../_utils/firebase"; // Import Firebase auth object
 
 const ProfileSidebar = ({ onClose }) => {
   // Sample data for profile details
@@ -11,13 +12,17 @@ const ProfileSidebar = ({ onClose }) => {
     email: "john.doe@example.com",
   };
 
-  const { signOutUser } = useUserAuth();
+  const { user } = useUserAuth();
 
   const handleLogout = async () => {
     try {
-      await signOutUser();
-      console.log("Logged out successfully");
-      window.location.href = "/";
+      if (user) {
+        await auth.signOut(); // Sign out from Firebase authentication
+        console.log("Logged out successfully");
+        window.location.href = "/"; // Redirect to the homepage after logout
+      } else {
+        console.log("No user signed in.");
+      }
     } catch (error) {
       console.error("Error logging out:", error);
     }

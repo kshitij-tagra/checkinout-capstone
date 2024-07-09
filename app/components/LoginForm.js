@@ -11,27 +11,51 @@ const LoginForm = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+
+    // Check if email or password fields are empty
+    if (!email) {
+      setError("Email is required.");
+      return;
+    }
+
+    if (!password) {
+      setError("Password is required.");
+      return;
+    }
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      setError("Invalid email address.");
+      return;
+    }
+
     try {
       await signIn(email, password);
       window.location.href = "/pages/homepage";
     } catch (error) {
-      setError(error.message);
+      setError("Incorrect Email or Password.")
     }
+  };
+
+  // Email validation function
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
   };
 
   return (
     <form className="w-full" onSubmit={handleSignIn}>
       <div className="mb-4">
         <label
-          htmlFor="email"
           className="block text-gray-700 text-sm font-bold mb-2"
+          htmlFor="email"
         >
           Email
         </label>
         <input
-          type="email"
-          id="email"
           className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none"
+          id="email"
+          type="text"
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -39,27 +63,34 @@ const LoginForm = () => {
       </div>
       <div className="mb-4">
         <label
-          htmlFor="password"
           className="block text-gray-700 text-sm font-bold mb-2"
+          htmlFor="password"
         >
           Password
         </label>
         <input
-          type="password"
-          id="password"
           className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none"
+          id="password"
+          type="password"
           placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      {error && <p className="text-red-500">{error}</p>}
-      <button
-        type="submit"
-        className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
-      >
-        Sign In
-      </button>
+      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+      <div className="flex items-center justify-end mb-6">
+        <a href="#" className="text-blue-500 hover:text-blue-700 text-sm">
+          Forgot Password?
+        </a>
+      </div>
+      <div className="flex items-center justify-center">
+        <button
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Sign In
+        </button>
+      </div>
     </form>
   );
 };
