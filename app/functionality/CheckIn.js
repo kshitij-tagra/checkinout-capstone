@@ -1,20 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import GuardList from "../components/GuardList";
 import GuardCheckInForm from "../components/GuardCheckInForm";
 import GuardSearch from "../components/GuardSearch";
 
 const CheckIn = () => {
-  // Temporary list of guards
-  const guards = [
-    { id: 1, name: "John Doe", corpsId: "12345" },
-    { id: 2, name: "Jane Smith", corpsId: "67890" },
-    { id: 3, name: "Alice Johnson", corpsId: "54321" },
-    { id: 4, name: "Bob Brown", corpsId: "98765" },
-    // Add more guards as needed
-  ];
-
+  const [guards, setGuards] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGuard, setSelectedGuard] = useState(null);
+  const db = getFirestore();
+
+  // Function to fetch guards from Firestore based on search query
+  const fetchGuards = async () => {
+    const guardCollection = collection(db, "guards");
+
+    const guardSnapshot = await getDocs(guardCollection);
+    const guardList = guardSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // Filter guards based on case-insensitive search query
+    const filteredGuards = guardList.filter((guard) => {
+      const nameMatch = guard.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const corpsIDMatch = guard.corpsID.toString().includes(searchQuery);
+      return nameMatch || corpsIDMatch;
+    });
+
+    setGuards(filteredGuards);
+  };
 
   // Function to handle search query change
   const handleSearchChange = (e) => {
@@ -40,12 +56,14 @@ const CheckIn = () => {
     setSelectedGuard(null);
   };
 
-  // Filter guards based on search query
-  const filteredGuards = guards.filter(
-    (guard) =>
-      guard.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      guard.corpsId.includes(searchQuery)
-  );
+  // Fetch guards whenever the search query changes
+  useEffect(() => {
+    if (searchQuery) {
+      fetchGuards();
+    } else {
+      setGuards([]);
+    }
+  }, [searchQuery]);
 
   return (
     <div className="p-4 w-full">
@@ -61,7 +79,7 @@ const CheckIn = () => {
 
       {/* Guard List */}
       {searchQuery && !selectedGuard && (
-        <GuardList guards={filteredGuards} onSelectGuard={handleGuardSelect} />
+        <GuardList guards={guards} onSelectGuard={handleGuardSelect} />
       )}
 
       {/* Guard Sign-In Form */}

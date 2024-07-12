@@ -2,13 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
-import { auth } from "../_utils/firebase"; // Import Firebase auth object
-import { getFirestore, doc, getDoc } from "firebase/firestore"; // Import Firestore functions
+import { auth } from "../_utils/firebase";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const ProfileSidebar = ({ onClose }) => {
   const { user } = useUserAuth();
   const [profileData, setProfileData] = useState(null);
-  const db = getFirestore(); // Initialize Firestore
+  const db = getFirestore();
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -42,9 +42,9 @@ const ProfileSidebar = ({ onClose }) => {
   const handleLogout = async () => {
     try {
       if (user) {
-        await auth.signOut(); // Sign out from Firebase authentication
+        await auth.signOut();
         console.log("Logged out successfully");
-        window.location.href = "/"; // Redirect to the homepage after logout
+        window.location.href = "/";
       } else {
         console.log("No user signed in.");
       }

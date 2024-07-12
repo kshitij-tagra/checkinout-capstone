@@ -11,11 +11,13 @@ const GuardList = ({ guards, onSelectGuard }) => {
               className="p-2 border-b last:border-b-0 border-gray-400 cursor-pointer bg-white hover:font-semibold transition-all ease-in-out hover:bg-blue-500 hover:text-white"
               onClick={() => onSelectGuard(guard)}
             >
-              {guard.name} (#{guard.corpsId})
+              {guard.name} (#{guard.corpsID}) {/* Updated corpsID field */}
             </div>
           ))
         ) : (
-          <p className="p-2">No guards found</p>
+          <p className="p-2 border-b last:border-b-0 border-gray-400 cursor-pointer bg-white">
+            No guards found
+          </p>
         )}
       </div>
     </div>
