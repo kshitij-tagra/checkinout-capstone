@@ -44,12 +44,13 @@ export default function Page() {
             className="bg-white bg-opacity-80 rounded-lg p-6 md:p-8  flex flex-col justify-center items-center"
             style={{ height: "500px", width: "400px" }}
           >
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+            <h1 className="text-3xl md:text-4xl mt-3 font-bold justify-center items-center text-center">
               Welcome!
             </h1>
             <br />
             <br />
-            <div className="w-full p-4 md:p-6 bg-white bg-opacity-70 rounded-lg shadow-lg">
+            <div className="w-full p-4 md:p-6 bg-white bg-opacity-70 rounded-lg shadow-lg"
+              style={{ height: "350px", width: "350px" }}>
               <LoginForm />
             </div>
           </div>

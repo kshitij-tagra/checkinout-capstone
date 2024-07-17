@@ -3,7 +3,7 @@ import Link from "next/link";
 const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white p-4 relative z-10 text-sm">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between text-center items-center">
         <div className="mb-4 md:mb-0">
           &copy; {new Date().getFullYear()} CheckInOut. All Rights Reserved.
         </div>

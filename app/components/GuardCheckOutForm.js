@@ -3,12 +3,12 @@ import React from "react";
 const GuardCheckOutForm = ({ guard, onSubmit, onCancel }) => {
   return (
     <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 mx-auto">
-      <h2 className="text-xl font-bold mb-4">Checking out "{guard.name}"</h2>
+      <h2 className="text-xl font-bold mb-4">{`Checking out "${guard.name}"`}</h2>
       <form onSubmit={onSubmit}>
         <table className="w-full">
           <tbody>
             <tr>
-              <td className="py-2">CAMSAT:</td>
+              <td className="py-2 align-top">CAMSAT:</td>
               <td className="py-2">
                 <div className="flex">
                   <div className="mr-4 w-1/2">
@@ -27,7 +27,7 @@ const GuardCheckOutForm = ({ guard, onSubmit, onCancel }) => {
               </td>
             </tr>
             <tr>
-              <td className="py-2">Radio & Pouch:</td>
+              <td className="py-2 align-top">Radio & Pouch:</td>
               <td className="py-2">
                 <div className="flex">
                   <div className="mr-4 w-1/2">
@@ -51,7 +51,7 @@ const GuardCheckOutForm = ({ guard, onSubmit, onCancel }) => {
               </td>
             </tr>
             <tr>
-              <td className="py-2">CUFF #:</td>
+              <td className="py-2 align-top">CUFF #:</td>
               <td className="py-2">
                 <div className="flex">
                   <div className="mr-4 w-1/2">
@@ -75,7 +75,7 @@ const GuardCheckOutForm = ({ guard, onSubmit, onCancel }) => {
               </td>
             </tr>
             <tr>
-              <td className="py-2">Casual Vest:</td>
+              <td className="py-2 align-top">Casual Vest:</td>
               <td className="py-2">
                 <div className="flex">
                   <div className="mr-4 w-1/2">
@@ -99,7 +99,7 @@ const GuardCheckOutForm = ({ guard, onSubmit, onCancel }) => {
               </td>
             </tr>
             <tr>
-              <td className="py-2">Casual Earplugs:</td>
+              <td className="py-2 align-top">Casual Earplugs:</td>
               <td className="py-2">
                 <div className="flex">
                   <div className="mr-4 w-1/2">

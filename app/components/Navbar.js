@@ -21,7 +21,7 @@ const NavBar = ({
     </div>
 
     {/* Main Navigation Options */}
-    <div className="flex items-center justify-center w-1/2">
+    <div className="flex items-center justify-center w-2/3">
       <div className="bg-black py-2 px-6 rounded-full flex justify-evenly w-full">
         <button
           className={`focus:outline-none text-gray-200 hover:text-white font-semibold hover:font-extrabold ${
