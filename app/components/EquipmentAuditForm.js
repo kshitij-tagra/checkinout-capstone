@@ -1,142 +1,124 @@
-import { useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { db } from "../_utils/firebase";
 
 const EquipmentAuditForm = () => {
-  const currentDate = new Date().toLocaleDateString();
+    const currentDate = new Date().toLocaleDateString();
+    const [radioData, setRadioData] = useState({ startCount: 0, endCount: 0 });
+    const [camsatData, setCamsatData] = useState({
+        startCount: 0,
+        endCount: 0,
+    });
+    const [cuffData, setCuffData] = useState({ startCount: 0, endCount: 0 });
 
-  // State management for form fields
-  const [formData, setFormData] = useState({
-    radioStart: "",
-    radioEnd: "",
-    camsatStart: "",
-    camsatEnd: "",
-    radioPouchStart: "",
-    radioPouchEnd: "",
-    camsatPouchStart: "",
-    camsatPouchEnd: "",
-    handCuffsStart: "",
-    handCuffsEnd: "",
-  });
+    useEffect(() => {
+        async function fetchCheckOuts() {
+            const res = await getDocs(collection(db, "checkOuts"));
+            console.log(res.docs);
+            const a = res.docs.map((doc) => ({
+                id: doc.data().id,
+                borrowedItems: doc.data().checkInData.borrowedItems,
+                returnReport: doc.data().returnReport,
+            }));
 
-  const [errors, setErrors] = useState({});
+            let radioStart = 0;
+            let camStart = 0;
+            let cuffStart = 0;
 
-  // Function to handle input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+            let radioEnd = 0;
+            let camEnd = 0;
+            let cuffEnd = 0;
 
-  // Function to handle form save
-  const handleSave = () => {
-    console.log("Shift-start counts saved:", formData);
-    // Save the shift-start counts logic here
-  };
+            a.forEach((rec) => {
+                if (rec.borrowedItems.radio === "true") {
+                    radioStart++;
+                }
+                if (rec.borrowedItems.camsat === "true") {
+                    camStart++;
+                }
+                if (rec.borrowedItems.cuff === "true") {
+                    cuffStart++;
+                }
 
-  // Function to handle form submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let newErrors = {};
-    // Validate the form fields
-    for (const [key, value] of Object.entries(formData)) {
-      if (value === "") {
-        newErrors[key] = "This field is required";
-      }
-    }
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted:", formData);
-      // Submit the form data logic here
-    } else {
-      setErrors(newErrors);
-    }
-  };
+                if (rec.returnReport.radio === "true") {
+                    radioEnd++;
+                }
+                if (rec.returnReport.camsat === "true") {
+                    camEnd++;
+                }
+                if (rec.returnReport.cuff === "true") {
+                    cuffEnd++;
+                }
+            });
 
-  return (
-    <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 mx-auto">
-      <h2 className="text-xl font-bold mb-4">Audit for: {currentDate}</h2>
-      <form onSubmit={handleSubmit}>
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="py-2">Equipment</th>
-              <th className="py-2">Shift-Start Count</th>
-              <th className="py-2">Shift-End Count</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              { label: "Radio", start: "radioStart", end: "radioEnd" },
-              {
-                label: "Radio Pouch",
-                start: "radioPouchStart",
-                end: "radioPouchEnd",
-              },
-              { label: "Camsat", start: "camsatStart", end: "camsatEnd" },
-              {
-                label: "Camsat Pouch",
-                start: "camsatPouchStart",
-                end: "camsatPouchEnd",
-              },
-              {
-                label: "Hand-Cuffs",
-                start: "handCuffsStart",
-                end: "handCuffsEnd",
-              },
-            ].map(({ label, start, end }) => (
-              <tr key={label}>
-                <td className="py-2">{label}</td>
-                <td className="py-2">
-                  <input
-                    type="number"
-                    name={start}
-                    className="w-full p-2 border border-gray-300 rounded"
-                    value={formData[start]}
-                    onChange={handleChange}
-                  />
-                  {errors[start] && (
-                    <div className="text-red-500">{errors[start]}</div>
-                  )}
-                </td>
-                <td className="py-2">
-                  <input
-                    type="number"
-                    name={end}
-                    className="w-full p-2 border border-gray-300 rounded"
-                    value={formData[end]}
-                    onChange={handleChange}
-                  />
-                  {errors[end] && (
-                    <div className="text-red-500">{errors[end]}</div>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            setRadioData({ startCount: radioStart, endCount: radioEnd });
+            setCuffData({ startCount: cuffStart, endCount: cuffEnd });
+            setCamsatData({ startCount: camStart, endCount: camEnd });
+        }
+        fetchCheckOuts();
+    }, []);
 
-        {/* Form Buttons */}
-        <div className="flex justify-end space-x-4 mt-4">
-          <button
-            type="button"
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Report
-          </button>
-          <button
-            type="button"
-            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-            onClick={handleSave}
-          >
-            Save
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Submit
-          </button>
+    return (
+        <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 mx-auto">
+            <h2 className="text-xl font-bold mb-4">
+                Audit till: {currentDate}
+            </h2>
+
+            <table className="w-full">
+                <thead>
+                    <tr>
+                        <th className="py-2">Equipment</th>
+                        <th className="py-2">Shift-Start Count</th>
+                        <th className="py-2">Shift-End Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {[
+                        {
+                            label: "Radio & pouches",
+
+                            startCount: radioData.startCount,
+                            endCount: radioData.endCount,
+                        },
+                        {
+                            label: "Camsat & pouches",
+
+                            startCount: camsatData.startCount,
+                            endCount: camsatData.endCount,
+                        },
+                        {
+                            label: "Hand-Cuffs",
+                            startCount: cuffData.startCount,
+                            endCount: cuffData.endCount,
+                        },
+                    ].map(({ label, startCount, endCount }) => (
+                        <tr key={label}>
+                            <td>{label}</td>
+                            <td>
+                                <span className="bg-neutral-100 w-full block text-center rounded-md py-1">
+                                    {startCount}
+                                </span>
+                            </td>
+                            <td>
+                                <span className="bg-neutral-100 w-full block text-center rounded-md py-1">
+                                    {endCount}
+                                </span>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            {/* Form Buttons */}
+            <div className="flex justify-end space-x-4 mt-4">
+                <button
+                    type="button"
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                    Report
+                </button>
+            </div>
         </div>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default EquipmentAuditForm;

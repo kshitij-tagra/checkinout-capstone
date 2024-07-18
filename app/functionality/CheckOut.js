@@ -37,7 +37,6 @@ const CheckOut = () => {
     const handleSubmit = async (e, returnedStuff) => {
         e.preventDefault();
         const currentCheckIn = selectedCheckIn;
-        console.log(currentCheckIn);
         // Handle guard sign-out logic here
 
         const isFaultyCheckOut =
@@ -60,6 +59,7 @@ const CheckOut = () => {
                 await makeEquipmentAvailable(currentCheckIn.selectedCuffID);
             }
         } else {
+            console.log("Stuff returned", returnedStuff);
             // make the returned items available
             if (returnedStuff.camsat === "true") {
                 await makeEquipmentAvailable(currentCheckIn.selectedCamsetID);
