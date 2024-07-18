@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
 import {
-    getFirestore,
+    addDoc,
     collection,
-    getDocs,
-    updateDoc,
     doc,
+    getDocs,
+    getFirestore,
+    updateDoc,
 } from "firebase/firestore";
-import GuardList from "../components/GuardList";
+import { useEffect, useState } from "react";
 import GuardCheckInForm from "../components/GuardCheckInForm";
+import GuardList from "../components/GuardList";
 import GuardSearch from "../components/GuardSearch";
 
 const CheckIn = () => {
@@ -55,10 +56,32 @@ const CheckIn = () => {
     };
 
     // Function to handle form submit
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (checkInData) => {
         // Handle guard sign-in logic here
-        console.log("Guard signed in:", selectedGuard);
+        console.log("Guard signed in:", {
+            guard: selectedGuard,
+            ...checkInData,
+        });
+        await addDoc(collection(db, "checkINs"), {
+            guard: selectedGuard,
+            ...checkInData,
+        });
+        // if cuffs were given then make them unavailable
+        if (checkInData.selectedCuffID) {
+            await updateDoc(doc(db, "equipments", checkInData.selectedCuffID), {
+                available: false,
+            });
+        }
+
+        await updateDoc(doc(db, "equipments", checkInData.selectedCamsetID), {
+            available: false,
+        });
+        await updateDoc(doc(db, "equipments", checkInData.selectedRadioID), {
+            available: false,
+        });
+
+        console.log("CheckedIN");
+
         setSelectedGuard(null);
     };
 
@@ -92,7 +115,7 @@ const CheckIn = () => {
             {selectedGuard && (
                 <GuardCheckInForm
                     guard={selectedGuard}
-                    onSubmit={handleSubmit}
+                    onCheckInFormSubmit={handleSubmit}
                     onCancel={handleCancel}
                 />
             )}

@@ -2,7 +2,7 @@ import { collection, getDoc, getDocs, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../_utils/firebase";
 
-const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
+const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
     const [formData, setFormData] = useState({
         securityLicense: "",
         notebook: "",
@@ -21,11 +21,29 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
     });
     const [equipments, setEquipments] = useState([]);
 
+    const [selectedCamsetID, setSelectedCamsetID] = useState(null);
+    const [selectedRadioID, setSelectedRadioID] = useState(null);
+    const [selectedCuffID, setSelectedCuffID] = useState(null);
+
     const [selectedCamPouchNumber, setSelectedCamPuchNumber] = useState(null);
     const [selectedRadioPouchNumber, setSelectedRadioPuchNumber] =
         useState(null);
 
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            camsatPouchNumber: selectedCamPouchNumber,
+        }));
+    }, [selectedCamPouchNumber]);
+
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            radioPouchNumber: selectedRadioPouchNumber,
+        }));
+    }, [selectedRadioPouchNumber]);
 
     useEffect(() => {
         async function fetchEquipments() {
@@ -68,10 +86,17 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
             validationErrors.cuffNumber = "Please enter this field.";
         }
 
+        console.log(Object.keys(validationErrors));
+
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
-            onSubmit(formData); // Only call onSubmit if there are no errors
+            onCheckInFormSubmit({
+                ...formData,
+                selectedCamsetID,
+                selectedRadioID,
+                selectedCuffID,
+            }); // Only call onSubmit if there are no errors
         }
     };
 
@@ -112,12 +137,13 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
                     id="cmsatNumber"
                     onChange={async (e) => {
                         handleChange(e);
-                        const selectedCamsetObj = equipments.find(
+                        const selectedCamObj = equipments.find(
                             (eqp) => eqp["device#"] === e.target.value
                         );
-                        if (selectedCamsetObj) {
+                        setSelectedCamsetID(selectedCamObj.id);
+                        if (selectedCamObj) {
                             setSelectedCamPuchNumber(
-                                selectedCamsetObj["devicePouch#"]
+                                selectedCamObj["devicePouch#"]
                             );
                         } else {
                             setSelectedCamPuchNumber(null);
@@ -160,13 +186,14 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
                         id="radioNumber"
                         onChange={async (e) => {
                             handleChange(e);
-                            const selectedRadioObj = equipments.find(
+                            const selectedRadObj = equipments.find(
                                 (eqp) => eqp["device#"] === e.target.value
                             );
+                            setSelectedRadioID(selectedRadObj.id);
 
-                            if (selectedRadioObj) {
+                            if (selectedRadObj) {
                                 setSelectedRadioPuchNumber(
-                                    selectedRadioObj["devicePouch#"]
+                                    selectedRadObj["devicePouch#"]
                                 );
                             } else {
                                 setSelectedRadioPuchNumber(null);
@@ -236,7 +263,13 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
                             name="cuffNumber"
                             className="bg-neutral-100 p-2"
                             id="cuffNumber"
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                handleChange(e);
+                                const selectedCuffObj = equipments.find(
+                                    (eqp) => eqp["device#"] === e.target.value
+                                );
+                                setSelectedCuffID(selectedCuffObj.id);
+                            }}
                             defaultValue={""}>
                             <option value={""}>Select a CUFF#</option>
                             {equipments
