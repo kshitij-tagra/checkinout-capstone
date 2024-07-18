@@ -1,202 +1,335 @@
-import React, { useState } from "react";
+import { collection, getDoc, getDocs, query } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { db } from "../_utils/firebase";
 
 const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
-  const [formData, setFormData] = useState({
-    securityLicense: "",
-    notebook: "",
-    bvcId: "",
-    firstAidCertificate: "",
-    camsatNumber: "",
-    camsatPouchNumber: "",
-    radioNumber: "",
-    radioPouchNumber: "",
-    cuffNumber: "",
-    uniformBeltBoots: "",
-    casualVest: "",
-    casualEarplugs: "",
-    onSiteTime: "",
-    ppctTrained: "",
-  });
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    // Clear errors for a particular field
-    if (errors[name]) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: "",
-      }));
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let validationErrors = {};
-    Object.keys(formData).forEach((key) => {
-      if (formData[key] === "" && key !== "cuffNumber") {
-        // Exclude cuffNumber from mandatory fields unless ppctTrained is yes
-        validationErrors[key] = "Please enter this field.";
-      }
+    const [formData, setFormData] = useState({
+        securityLicense: "",
+        notebook: "",
+        bvcId: "",
+        firstAidCertificate: "",
+        camsatNumber: "",
+        camsatPouchNumber: "",
+        radioNumber: "",
+        radioPouchNumber: "",
+        cuffNumber: "",
+        uniformBeltBoots: "",
+        casualVest: "",
+        casualEarplugs: "",
+        onSiteTime: "",
+        ppctTrained: "",
     });
+    const [equipments, setEquipments] = useState([]);
 
-    if (formData.ppctTrained === "yes" && formData.cuffNumber === "") {
-      validationErrors.cuffNumber = "Please enter this field.";
-    }
+    const [selectedCamPouchNumber, setSelectedCamPuchNumber] = useState(null);
+    const [selectedRadioPouchNumber, setSelectedRadioPuchNumber] =
+        useState(null);
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      onSubmit(formData); // Only call onSubmit if there are no errors
-    }
-  };
+    const [errors, setErrors] = useState({});
 
-  return (
-    <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 mx-auto">
-      <h2 className="text-xl font-bold mb-4">{`Checking in "${guard.name}"`}</h2>
-      <form onSubmit={handleSubmit}>
-        <table className="w-full">
-          <tbody>
-            {/** Manually set each form field with proper labels and ordering **/}
-            <tr>
-              <td className="py-2">Security License:</td>
-              <td className="py-2">{renderRadioButtons("securityLicense")}</td>
-            </tr>
-            <tr>
-              <td className="py-2">Notebook:</td>
-              <td className="py-2">{renderRadioButtons("notebook")}</td>
-            </tr>
-            <tr>
-              <td className="py-2">BVC ID:</td>
-              <td className="py-2">{renderRadioButtons("bvcId")}</td>
-            </tr>
-            <tr>
-              <td className="py-2">First Aid Certificate:</td>
-              <td className="py-2">
-                {renderRadioButtons("firstAidCertificate")}
-              </td>
-            </tr>
-            {renderNumberInput("CAMSAT #", "camsatNumber")}
-            {renderNumberInput("CAMSAT Pouch #", "camsatPouchNumber")}
-            {renderNumberInput("Radio #", "radioNumber")}
-            {renderNumberInput("Radio Pouch #", "radioPouchNumber")}
+    useEffect(() => {
+        async function fetchEquipments() {
+            const allEqps = [];
+            const resEqps = await getDocs(collection(db, "equipments"));
+            resEqps.docs.forEach((eqp) => {
+                allEqps.push({ id: eqp.id, ...eqp.data() });
+            });
+            setEquipments(allEqps);
+        }
+        fetchEquipments();
+    }, []);
 
-            <tr>
-              <td className="py-2">Uniform Belt Boots:</td>
-              <td className="py-2">{renderRadioButtons("uniformBeltBoots")}</td>
-            </tr>
-            <tr>
-              <td className="py-2">Casual Vest:</td>
-              <td className="py-2">{renderRadioButtons("casualVest")}</td>
-            </tr>
-            <tr>
-              <td className="py-2">Casual Earplugs:</td>
-              <td className="py-2">{renderRadioButtons("casualEarplugs")}</td>
-            </tr>
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+        // Clear errors for a particular field
+        if (errors[name]) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: "",
+            }));
+        }
+    };
 
-            <tr>
-              <td className="py-2">PPCT Trained:</td>
-              <td className="py-2">{renderRadioButtons("ppctTrained")}</td>
-            </tr>
-            {formData.ppctTrained === "yes" &&
-              renderNumberInput("CUFF #", "cuffNumber")}
-            {/* {renderNumberInput('CUFF #', 'cuffNumber')} */}
-            <tr>
-              <td className="py-2">On Site Time:</td>
-              <td className="py-2">
-                <input
-                  type="time"
-                  name="onSiteTime"
-                  className="w-full p-2 border border-gray-300 rounded"
-                  value={formData.onSiteTime}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.onSiteTime && (
-                  <p className="text-red-500">{errors.onSiteTime}</p>
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let validationErrors = {};
+        Object.keys(formData).forEach((key) => {
+            if (formData[key] === "" && key !== "cuffNumber") {
+                // Exclude cuffNumber from mandatory fields unless ppctTrained is yes
+                validationErrors[key] = "Please enter this field.";
+            }
+        });
+
+        if (formData.ppctTrained === "yes" && formData.cuffNumber === "") {
+            validationErrors.cuffNumber = "Please enter this field.";
+        }
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+        } else {
+            onSubmit(formData); // Only call onSubmit if there are no errors
+        }
+    };
+
+    return (
+        <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 mx-auto">
+            <h2 className="text-xl font-bold mb-4">{`Checking in "${guard.name}"`}</h2>
+            <form onSubmit={handleSubmit}>
+                {/** Manually set each form field with proper labels and ordering **/}
+                <div className="flex justify-between">
+                    <span className="py-2">Security License:</span>
+                    <span className="py-2">
+                        {renderRadioButtons("securityLicense")}
+                    </span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="py-2">Notebook:</span>
+                    <span className="py-2">
+                        {renderRadioButtons("notebook")}
+                    </span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="py-2">BVC ID: </span>
+                    <span className="py-2">{renderRadioButtons("bvcId")} </span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="py-2">First Aid Certificate: </span>
+                    <span className="py-2">
+                        {renderRadioButtons("firstAidCertificate")}
+                    </span>
+                </div>
+
+                <label htmlFor="cmsatNumber" className="inline-block mr-5">
+                    CAMSAT #
+                </label>
+                <select
+                    className="bg-neutral-100 p-2"
+                    name="camsatNumber"
+                    id="cmsatNumber"
+                    onChange={async (e) => {
+                        handleChange(e);
+                        const selectedCamsetObj = equipments.find(
+                            (eqp) => eqp["device#"] === e.target.value
+                        );
+                        if (selectedCamsetObj) {
+                            setSelectedCamPuchNumber(
+                                selectedCamsetObj["devicePouch#"]
+                            );
+                        } else {
+                            setSelectedCamPuchNumber(null);
+                        }
+                    }}
+                    defaultValue={""}>
+                    <option value={""}>Select a camset#</option>
+                    {equipments
+                        .filter(
+                            (eqp) =>
+                                eqp.available === true &&
+                                eqp.deviceType === "CAM"
+                        )
+                        .map((eqp) => {
+                            return (
+                                <option key={eqp.id} value={eqp["device#"]}>
+                                    {eqp["device#"]}
+                                </option>
+                            );
+                        })}
+                </select>
+
+                <span className="bg-neutral-200 inline-block  rounded-md p-2 m-2">
+                    Device Puch Number:
+                    {selectedCamPouchNumber
+                        ? ` ${selectedCamPouchNumber}`
+                        : "No camset Selected"}
+                </span>
+                {errors["camsatNumber"] && (
+                    <p className="text-red-500">{errors["camsatNumber"]}</p>
                 )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
-        <div className="flex justify-end space-x-4 mt-4">
-          <button
-            type="button"
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-            onClick={onCancel}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+                <div>
+                    <label htmlFor="radioNumber" className="mr-9">
+                        RADIO #
+                    </label>
+                    <select
+                        name="radioNumber"
+                        className="bg-neutral-100 p-2"
+                        id="radioNumber"
+                        onChange={async (e) => {
+                            handleChange(e);
+                            const selectedRadioObj = equipments.find(
+                                (eqp) => eqp["device#"] === e.target.value
+                            );
 
-  function renderRadioButtons(fieldName) {
-    return (
-      <div className="flex">
-        <div className="mr-4 w-1/2">
-          <label>
-            <input
-              type="radio"
-              name={fieldName}
-              value="yes"
-              checked={formData[fieldName] === "yes"}
-              onChange={handleChange}
-              required
-            />{" "}
-            Yes
-          </label>
+                            if (selectedRadioObj) {
+                                setSelectedRadioPuchNumber(
+                                    selectedRadioObj["devicePouch#"]
+                                );
+                            } else {
+                                setSelectedRadioPuchNumber(null);
+                            }
+                        }}
+                        defaultValue={""}>
+                        <option value={""}>Select a radio#</option>
+                        {equipments
+                            .filter(
+                                (eqp) =>
+                                    eqp.available === true &&
+                                    eqp.deviceType === "RAD"
+                            )
+                            .map((eqp) => {
+                                return (
+                                    <option key={eqp.id} value={eqp["device#"]}>
+                                        {eqp["device#"]}
+                                    </option>
+                                );
+                            })}
+                    </select>
+
+                    <span className="bg-neutral-200 inline-block  rounded-md p-2 m-2">
+                        Radio Puch Number:
+                        {selectedRadioPouchNumber
+                            ? ` ${selectedRadioPouchNumber}`
+                            : "No radio Selected"}
+                    </span>
+                    {errors["radioNumber"] && (
+                        <p className="text-red-500">{errors["radioNumber"]}</p>
+                    )}
+                </div>
+
+                <div className="flex justify-between">
+                    <span className="py-2">Uniform Belt Boots: </span>
+                    <span className="py-2">
+                        {renderRadioButtons("uniformBeltBoots")}
+                    </span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="py-2">Casual Vest: </span>
+                    <span className="py-2">
+                        {renderRadioButtons("casualVest")}{" "}
+                    </span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="py-2">Casual Earplugs: </span>
+                    <span className="py-2">
+                        {renderRadioButtons("casualEarplugs")}
+                    </span>
+                </div>
+
+                <div className="flex justify-between">
+                    <span className="py-2">PPCT Trained: </span>
+                    <span className="py-2">
+                        {renderRadioButtons("ppctTrained")}
+                    </span>
+                </div>
+                {formData.ppctTrained === "yes" && (
+                    <>
+                        <label
+                            htmlFor="cuffNumber"
+                            className="inline-block mr-5 mt-6">
+                            CUFF #
+                        </label>
+                        <select
+                            name="cuffNumber"
+                            className="bg-neutral-100 p-2"
+                            id="cuffNumber"
+                            onChange={handleChange}
+                            defaultValue={""}>
+                            <option value={""}>Select a CUFF#</option>
+                            {equipments
+                                .filter(
+                                    (eqp) =>
+                                        eqp.available === true &&
+                                        eqp.deviceType === "CUF"
+                                )
+                                .map((eqp) => {
+                                    return (
+                                        <option
+                                            key={eqp.id}
+                                            value={eqp["device#"]}>
+                                            {eqp["device#"]}
+                                        </option>
+                                    );
+                                })}
+                        </select>
+                        {errors["cuffNumber"] && (
+                            <p className="text-red-500">
+                                {errors["cuffNumber"]}
+                            </p>
+                        )}
+                    </>
+                )}
+
+                <div className="flex justify-between">
+                    <span className="py-2">On Site Time: </span>
+                    <span className="py-2">
+                        <input
+                            type="time"
+                            name="onSiteTime"
+                            className="w-full p-2 border border-gray-300 rounded"
+                            value={formData.onSiteTime}
+                            onChange={handleChange}
+                            required
+                        />
+                        {errors.onSiteTime && (
+                            <p className="text-red-500">{errors.onSiteTime}</p>
+                        )}
+                    </span>
+                </div>
+
+                <div className="flex justify-end space-x-4 mt-4">
+                    <button
+                        type="button"
+                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                        onClick={onCancel}>
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Submit
+                    </button>
+                </div>
+            </form>
         </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              name={fieldName}
-              value="no"
-              checked={formData[fieldName] === "no"}
-              onChange={handleChange}
-            />{" "}
-            No
-          </label>
-        </div>
-        {errors[fieldName] && (
-          <p className="text-red-500">{errors[fieldName]}</p>
-        )}
-      </div>
     );
-  }
 
-  function renderNumberInput(label, fieldName) {
-    return (
-      <tr key={fieldName}>
-        <td className="py-2">{label}</td>
-        <td className="py-2">
-          <input
-            type="number"
-            name={fieldName}
-            className="w-full p-2 border border-gray-300 rounded"
-            value={formData[fieldName]}
-            onChange={handleChange}
-          />
-          {errors[fieldName] && (
-            <p className="text-red-500">{errors[fieldName]}</p>
-          )}
-        </td>
-      </tr>
-    );
-  }
+    function renderRadioButtons(fieldName) {
+        return (
+            <div className="flex gap-8">
+                <label>
+                    <input
+                        type="radio"
+                        name={fieldName}
+                        value="yes"
+                        checked={formData[fieldName] === "yes"}
+                        onChange={handleChange}
+                        required
+                    />{" "}
+                    Yes
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name={fieldName}
+                        value="no"
+                        checked={formData[fieldName] === "no"}
+                        onChange={handleChange}
+                    />{" "}
+                    No
+                </label>
+                <div>
+                    {errors[fieldName] && (
+                        <p className="text-red-500">{errors[fieldName]}</p>
+                    )}
+                </div>
+            </div>
+        );
+    }
 };
 
 export default GuardCheckInForm;
