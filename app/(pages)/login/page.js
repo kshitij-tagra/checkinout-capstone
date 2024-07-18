@@ -4,6 +4,16 @@ import Footer from "../../components/Footer";
 export default function Page() {
     return (
         <div className="flex flex-col min-h-screen relative">
+            {/* Background Image */}
+            <div
+                className="absolute inset-0 z-0 bg-cover bg-center blur-sm"
+                style={{
+                    backgroundImage: "url('/homepage.jpg')",
+                }}></div>
+
+            {/* Overlay to apply opacity to background */}
+            <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
+
             <div className="relative flex flex-1 flex-col md:flex-row">
                 <div className="w-full md:w-3/5 flex justify-center items-center p-10 order-1 md:order-2 relative">
                     <div className="text-center  max-w-xs md:max-w-md lg:max-w-lg">
