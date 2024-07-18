@@ -3,7 +3,7 @@
 import Layout from "../components/Layout";
 
 const Homepage = () => {
-    return <Layout />;
+  return <Layout />;
 };
 
 export default Homepage;

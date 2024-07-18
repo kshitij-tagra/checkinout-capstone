@@ -15,21 +15,21 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
     casualVest: "",
     casualEarplugs: "",
     onSiteTime: "",
-    ppctTrained: ""
+    ppctTrained: "",
   });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
     // Clear errors for a particular field
     if (errors[name]) {
-      setErrors(prevErrors => ({
+      setErrors((prevErrors) => ({
         ...prevErrors,
-        [name]: ""
+        [name]: "",
       }));
     }
   };
@@ -37,8 +37,9 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let validationErrors = {};
-    Object.keys(formData).forEach(key => {
-      if (formData[key] === "" && key !== "cuffNumber") { // Exclude cuffNumber from mandatory fields unless ppctTrained is yes
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] === "" && key !== "cuffNumber") {
+        // Exclude cuffNumber from mandatory fields unless ppctTrained is yes
         validationErrors[key] = "Please enter this field.";
       }
     });
@@ -63,43 +64,46 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
             {/** Manually set each form field with proper labels and ordering **/}
             <tr>
               <td className="py-2">Security License:</td>
-              <td className="py-2">{renderRadioButtons('securityLicense')}</td>
+              <td className="py-2">{renderRadioButtons("securityLicense")}</td>
             </tr>
             <tr>
               <td className="py-2">Notebook:</td>
-              <td className="py-2">{renderRadioButtons('notebook')}</td>
+              <td className="py-2">{renderRadioButtons("notebook")}</td>
             </tr>
             <tr>
               <td className="py-2">BVC ID:</td>
-              <td className="py-2">{renderRadioButtons('bvcId')}</td>
+              <td className="py-2">{renderRadioButtons("bvcId")}</td>
             </tr>
             <tr>
               <td className="py-2">First Aid Certificate:</td>
-              <td className="py-2">{renderRadioButtons('firstAidCertificate')}</td>
+              <td className="py-2">
+                {renderRadioButtons("firstAidCertificate")}
+              </td>
             </tr>
-            {renderNumberInput('CAMSAT #', 'camsatNumber')}
-            {renderNumberInput('CAMSAT Pouch #', 'camsatPouchNumber')}
-            {renderNumberInput('Radio #', 'radioNumber')}
-            {renderNumberInput('Radio Pouch #', 'radioPouchNumber')}
-           
+            {renderNumberInput("CAMSAT #", "camsatNumber")}
+            {renderNumberInput("CAMSAT Pouch #", "camsatPouchNumber")}
+            {renderNumberInput("Radio #", "radioNumber")}
+            {renderNumberInput("Radio Pouch #", "radioPouchNumber")}
+
             <tr>
               <td className="py-2">Uniform Belt Boots:</td>
-              <td className="py-2">{renderRadioButtons('uniformBeltBoots')}</td>
+              <td className="py-2">{renderRadioButtons("uniformBeltBoots")}</td>
             </tr>
             <tr>
               <td className="py-2">Casual Vest:</td>
-              <td className="py-2">{renderRadioButtons('casualVest')}</td>
+              <td className="py-2">{renderRadioButtons("casualVest")}</td>
             </tr>
             <tr>
               <td className="py-2">Casual Earplugs:</td>
-              <td className="py-2">{renderRadioButtons('casualEarplugs')}</td>
+              <td className="py-2">{renderRadioButtons("casualEarplugs")}</td>
             </tr>
-            
+
             <tr>
               <td className="py-2">PPCT Trained:</td>
-              <td className="py-2">{renderRadioButtons('ppctTrained')}</td>
+              <td className="py-2">{renderRadioButtons("ppctTrained")}</td>
             </tr>
-            {formData.ppctTrained === "yes" && renderNumberInput('CUFF #', 'cuffNumber')}
+            {formData.ppctTrained === "yes" &&
+              renderNumberInput("CUFF #", "cuffNumber")}
             {/* {renderNumberInput('CUFF #', 'cuffNumber')} */}
             <tr>
               <td className="py-2">On Site Time:</td>
@@ -112,7 +116,9 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
                   onChange={handleChange}
                   required
                 />
-                {errors.onSiteTime && <p className="text-red-500">{errors.onSiteTime}</p>}
+                {errors.onSiteTime && (
+                  <p className="text-red-500">{errors.onSiteTime}</p>
+                )}
               </td>
             </tr>
           </tbody>
@@ -149,7 +155,8 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
               checked={formData[fieldName] === "yes"}
               onChange={handleChange}
               required
-            /> Yes
+            />{" "}
+            Yes
           </label>
         </div>
         <div>
@@ -160,10 +167,13 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
               value="no"
               checked={formData[fieldName] === "no"}
               onChange={handleChange}
-            /> No
+            />{" "}
+            No
           </label>
         </div>
-        {errors[fieldName] && <p className="text-red-500">{errors[fieldName]}</p>}
+        {errors[fieldName] && (
+          <p className="text-red-500">{errors[fieldName]}</p>
+        )}
       </div>
     );
   }
@@ -180,7 +190,9 @@ const GuardCheckInForm = ({ guard, onSubmit, onCancel }) => {
             value={formData[fieldName]}
             onChange={handleChange}
           />
-          {errors[fieldName] && <p className="text-red-500">{errors[fieldName]}</p>}
+          {errors[fieldName] && (
+            <p className="text-red-500">{errors[fieldName]}</p>
+          )}
         </td>
       </tr>
     );

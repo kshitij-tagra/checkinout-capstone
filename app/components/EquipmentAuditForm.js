@@ -5,12 +5,12 @@ const EquipmentAuditForm = () => {
 
   // State management for form fields
   const [formData, setFormData] = useState({
-    sonimStart: "",
-    sonimEnd: "",
+    radioStart: "",
+    radioEnd: "",
     camsatStart: "",
     camsatEnd: "",
-    sonimPouchStart: "",
-    sonimPouchEnd: "",
+    radioPouchStart: "",
+    radioPouchEnd: "",
     camsatPouchStart: "",
     camsatPouchEnd: "",
     handCuffsStart: "",
@@ -63,13 +63,13 @@ const EquipmentAuditForm = () => {
           </thead>
           <tbody>
             {[
-              { label: "Sonim", start: "sonimStart", end: "sonimEnd" },
-              { label: "Camsat", start: "camsatStart", end: "camsatEnd" },
+              { label: "Radio", start: "radioStart", end: "radioEnd" },
               {
-                label: "Sonim Pouch",
-                start: "sonimPouchStart",
-                end: "sonimPouchEnd",
+                label: "Radio Pouch",
+                start: "radioPouchStart",
+                end: "radioPouchEnd",
               },
+              { label: "Camsat", start: "camsatStart", end: "camsatEnd" },
               {
                 label: "Camsat Pouch",
                 start: "camsatPouchStart",
