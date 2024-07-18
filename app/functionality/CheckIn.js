@@ -65,6 +65,14 @@ const CheckIn = () => {
         await addDoc(collection(db, "checkINs"), {
             guard: selectedGuard,
             ...checkInData,
+            borrowedItems: {
+                camsat: checkInData.camsatNumber ? "true" : "false",
+                radio: checkInData.radioNumber ? "true" : "false",
+                cuff: checkInData.cuffNumber ? "true" : "false",
+                vest: checkInData.casualVest === "yes" ? "true" : "false",
+                earplugs:
+                    checkInData.casualEarplugs === "yes" ? "true" : "false",
+            },
         });
         // if cuffs were given then make them unavailable
         if (checkInData.selectedCuffID) {
