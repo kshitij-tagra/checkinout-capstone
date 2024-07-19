@@ -63,6 +63,7 @@ async function addEquipment(equipment) {
       deviceType: equipment.deviceType,
       "device#": equipment.deviceNumber,
       "devicePouch#": equipment.devicePouchNumber,
+      available: true,
     });
 
     console.log(

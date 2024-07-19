@@ -6,7 +6,7 @@ const ReturnsWithErrors = () => {
   const [faultyReturns, setFaultyReturns] = useState([]);
   useEffect(() => {
     async function fetchFaultyReturns() {
-      const res = await getDocs(collection(db, "checkoutsWithErrors"));
+      const res = await getDocs(collection(db, "checkedOutErrors"));
       const a = res.docs.map((doc) => ({
         faultId: doc.id,
         ...doc.data(),

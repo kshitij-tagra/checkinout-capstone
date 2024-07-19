@@ -25,8 +25,9 @@ const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
   const [selectedRadioID, setSelectedRadioID] = useState(null);
   const [selectedCuffID, setSelectedCuffID] = useState(null);
 
-  const [selectedCamPouchNumber, setSelectedCamPuchNumber] = useState(null);
-  const [selectedRadioPouchNumber, setSelectedRadioPuchNumber] = useState(null);
+  const [selectedCamPouchNumber, setSelectedCamPouchNumber] = useState(null);
+  const [selectedRadioPouchNumber, setSelectedRadioPouchNumber] =
+    useState(null);
 
   const [errors, setErrors] = useState({});
 
@@ -99,6 +100,40 @@ const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
     }
   };
 
+  function renderRadioButtons(fieldName) {
+    return (
+      <div className="flex gap-8">
+        <label className="w-1/2">
+          <input
+            type="radio"
+            name={fieldName}
+            value="yes"
+            checked={formData[fieldName] === "yes"}
+            onChange={handleChange}
+            required
+          />{" "}
+          Yes
+        </label>
+
+        <label className="w-1/2">
+          <input
+            type="radio"
+            name={fieldName}
+            value="no"
+            checked={formData[fieldName] === "no"}
+            onChange={handleChange}
+          />{" "}
+          No
+        </label>
+        <div>
+          {errors[fieldName] && (
+            <p className="text-red-500">{errors[fieldName]}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 mx-auto">
       <h2 className="text-xl font-bold mb-4">{`Checking in "${guard.name}"`}</h2>
@@ -139,9 +174,9 @@ const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
                     );
                     setSelectedCamsetID(selectedCamObj.id);
                     if (selectedCamObj) {
-                      setSelectedCamPuchNumber(selectedCamObj["devicePouch#"]);
+                      setSelectedCamPouchNumber(selectedCamObj["devicePouch#"]);
                     } else {
-                      setSelectedCamPuchNumber(null);
+                      setSelectedCamPouchNumber(null);
                     }
                   }}
                   defaultValue={""}
@@ -152,6 +187,11 @@ const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
                       (eqp) =>
                         eqp.available === true && eqp.deviceType === "CAM"
                     )
+                    .sort((a, b) => {
+                      const deviceA = a["device#"] || "";
+                      const deviceB = b["device#"] || "";
+                      return deviceA.localeCompare(deviceB);
+                    })
                     .map((eqp) => {
                       return (
                         <option key={eqp.id} value={eqp["device#"]}>
@@ -191,11 +231,11 @@ const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
                     );
                     setSelectedRadioID(selectedRadObj.id);
                     if (selectedRadObj) {
-                      setSelectedRadioPuchNumber(
+                      setSelectedRadioPouchNumber(
                         selectedRadObj["devicePouch#"]
                       );
                     } else {
-                      setSelectedRadioPuchNumber(null);
+                      setSelectedRadioPouchNumber(null);
                     }
                   }}
                   defaultValue={""}
@@ -206,6 +246,11 @@ const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
                       (eqp) =>
                         eqp.available === true && eqp.deviceType === "RAD"
                     )
+                    .sort((a, b) => {
+                      const deviceA = a["device#"] || "";
+                      const deviceB = b["device#"] || "";
+                      return deviceA.localeCompare(deviceB);
+                    })
                     .map((eqp) => {
                       return (
                         <option key={eqp.id} value={eqp["device#"]}>
@@ -270,6 +315,11 @@ const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
                         (eqp) =>
                           eqp.available === true && eqp.deviceType === "CUF"
                       )
+                      .sort((a, b) => {
+                        const deviceA = a["device#"] || "";
+                        const deviceB = b["device#"] || "";
+                        return deviceA.localeCompare(deviceB);
+                      })
                       .map((eqp) => {
                         return (
                           <option key={eqp.id} value={eqp["device#"]}>
@@ -320,40 +370,6 @@ const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
       </form>
     </div>
   );
-
-  function renderRadioButtons(fieldName) {
-    return (
-      <div className="flex gap-8">
-        <label className="w-1/2">
-          <input
-            type="radio"
-            name={fieldName}
-            value="yes"
-            checked={formData[fieldName] === "yes"}
-            onChange={handleChange}
-            required
-          />{" "}
-          Yes
-        </label>
-
-        <label className="w-1/2">
-          <input
-            type="radio"
-            name={fieldName}
-            value="no"
-            checked={formData[fieldName] === "no"}
-            onChange={handleChange}
-          />{" "}
-          No
-        </label>
-        <div>
-          {errors[fieldName] && (
-            <p className="text-red-500">{errors[fieldName]}</p>
-          )}
-        </div>
-      </div>
-    );
-  }
 };
 
 export default GuardCheckInForm;

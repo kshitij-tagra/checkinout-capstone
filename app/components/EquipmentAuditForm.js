@@ -12,8 +12,8 @@ const EquipmentAuditForm = () => {
   const [cuffData, setCuffData] = useState({ startCount: 0, endCount: 0 });
 
   useEffect(() => {
-    async function fetchCheckOuts() {
-      const res = await getDocs(collection(db, "checkOuts"));
+    async function fetchCheckedOutGuards() {
+      const res = await getDocs(collection(db, "checkedOutGuards"));
       console.log(res.docs);
       const a = res.docs.map((doc) => ({
         id: doc.data().id,
@@ -55,7 +55,7 @@ const EquipmentAuditForm = () => {
       setCuffData({ startCount: cuffStart, endCount: cuffEnd });
       setCamsatData({ startCount: camStart, endCount: camEnd });
     }
-    fetchCheckOuts();
+    fetchCheckedOutGuards();
   }, []);
 
   return (

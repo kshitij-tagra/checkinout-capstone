@@ -15,17 +15,17 @@ const CheckOut = () => {
   const [checkedInData, setCheckedInData] = useState([]);
   const [selectedCheckIn, setSelectedCheckIn] = useState(null);
 
-  async function fetchCheckIns() {
-    const res = await getDocs(collection(db, "checkINs"));
-    const allCheckIns = res.docs.map((doc) => ({
+  async function fetchCheckedInGuards() {
+    const res = await getDocs(collection(db, "checkedInGuards"));
+    const allCheckedInGuards = res.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    setCheckedInData(allCheckIns);
+    setCheckedInData(allCheckedInGuards);
   }
 
   useEffect(() => {
-    fetchCheckIns();
+    fetchCheckedInGuards();
   }, []);
 
   // Function to handle form cancel
@@ -72,24 +72,23 @@ const CheckOut = () => {
 
       // create a report that the return was faulty
 
-      await addDoc(collection(db, "checkoutsWithErrors"), {
+      await addDoc(collection(db, "checkedOutErrors"), {
         ...currentCheckIn,
         returnErrors: returnedStuff,
       });
     }
 
     // checkout the guard
-    await addDoc(collection(db, "checkOuts"), {
+    await addDoc(collection(db, "checkedOutGuards"), {
       checkInData: currentCheckIn,
       guard: currentCheckIn.guard,
       returnReport: returnedStuff,
     });
 
-    await deleteDoc(doc(db, "checkINs", currentCheckIn.id));
+    await deleteDoc(doc(db, "checkedInGuards", currentCheckIn.id));
 
     setSelectedCheckIn(null);
-    // fetch latest checkins
-    fetchCheckIns();
+    fetchCheckedInGuards();
   };
 
   return (
@@ -120,7 +119,7 @@ const CheckOut = () => {
             console.log(checkIn);
             return (
               <option key={checkIn.id} value={checkIn.id}>
-                {checkIn.guard.name}
+                {checkIn.guard.name} (#{checkIn.guard.corpsID})
               </option>
             );
           })}

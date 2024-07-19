@@ -62,7 +62,7 @@ const CheckIn = () => {
       guard: selectedGuard,
       ...checkInData,
     });
-    await addDoc(collection(db, "checkINs"), {
+    await addDoc(collection(db, "checkedInGuards"), {
       guard: selectedGuard,
       ...checkInData,
       borrowedItems: {
