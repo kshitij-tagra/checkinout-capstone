@@ -23,7 +23,7 @@ const ReturnsWithErrors = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 mx-auto">
-      <table className="w-full ">
+      <table className="w-full">
         <thead>
           <tr>
             <th className="text-center py-2 w-2/12 border-2 border-neutral-400">
