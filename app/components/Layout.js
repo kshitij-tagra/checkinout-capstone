@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Footer from "./Footer";
 import ProfileSidebar from "./ProfileSidebar";
 import TopBar from "./TopBar";
-import NavBar from "./NavBar";
+import NavBar from "./Navbar";
 import CheckIn from "../functionality/CheckIn";
 import CheckOut from "../functionality/CheckOut";
 import Audit from "../functionality/Audit";

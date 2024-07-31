@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Footer from "../../components/Footer";
 import TopBar from "../../components/TopBar";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/Navbar";
 import CheckIn from "../../functionality/CheckIn";
 import CheckOut from "../../functionality/CheckOut";
 import Audit from "../../functionality/Audit";
