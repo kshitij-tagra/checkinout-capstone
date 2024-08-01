@@ -2,7 +2,12 @@ import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../_utils/firebase";
 
-const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
+const GuardCheckInForm = ({
+  guard,
+  onCheckInFormSubmit,
+  onCancel,
+  isSubmitting,
+}) => {
   const [formData, setFormData] = useState({
     securityLicense: "",
     notebook: "",
@@ -363,8 +368,9 @@ const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
           <button
             type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            disabled={isSubmitting}
           >
-            Submit
+            {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>
