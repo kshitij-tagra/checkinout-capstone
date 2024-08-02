@@ -91,8 +91,6 @@ const GuardCheckInForm = ({
       validationErrors.cuffNumber = "Please enter this field.";
     }
 
-    console.log(Object.keys(validationErrors));
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {

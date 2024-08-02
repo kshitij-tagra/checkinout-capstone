@@ -3,7 +3,6 @@ import GuardCheckOutForm from "../components/GuardCheckOutForm";
 import {
   addDoc,
   collection,
-  deleteDoc,
   doc,
   getDocs,
   updateDoc,
@@ -23,7 +22,11 @@ const CheckOut = () => {
       id: doc.id,
       ...doc.data(),
     }));
-    setCheckedInData(allCheckedInGuards);
+    // Filter out guards who are checked out
+    const activeCheckedInGuards = allCheckedInGuards.filter(
+      (guard) => !guard.checkedOut
+    );
+    setCheckedInData(activeCheckedInGuards);
   }
 
   useEffect(() => {
@@ -77,7 +80,10 @@ const CheckOut = () => {
       returnReport: returnedStuff,
     });
 
-    await deleteDoc(doc(db, "checkedInGuards", currentCheckIn.id));
+    // Update the checkedInGuard document to indicate the guard is checked out
+    await updateDoc(doc(db, "checkedInGuards", currentCheckIn.id), {
+      checkedOut: true,
+    });
 
     setCheckedOutGuard(currentCheckIn.guard);
     setShowPopup(true);

@@ -16,7 +16,6 @@ const EquipmentAuditForm = () => {
   useEffect(() => {
     async function fetchCheckedOutGuards() {
       const res = await getDocs(collection(db, "checkedOutGuards"));
-      console.log(res.docs);
       const a = res.docs.map((doc) => ({
         id: doc.data().id,
         borrowedItems: doc.data().checkInData.borrowedItems,

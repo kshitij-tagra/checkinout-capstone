@@ -55,10 +55,6 @@ const CheckIn = () => {
     if (isSubmitting) return; // Prevent multiple submissions
     setIsSubmitting(true);
 
-    console.log("Guard signed in:", {
-      guard: selectedGuard,
-      ...checkInData,
-    });
     await addDoc(collection(db, "checkedInGuards"), {
       guard: selectedGuard,
       ...checkInData,
