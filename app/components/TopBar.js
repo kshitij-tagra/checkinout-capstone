@@ -3,7 +3,7 @@ import React from "react";
 
 const TopBar = () => {
   return (
-    <Link href="/">
+    <Link href="/pages/homepage">
       <div className="bg-gray-800 text-white py-4 flex justify-center items-center">
         <img
           src="/logo.png"

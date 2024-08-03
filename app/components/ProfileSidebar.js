@@ -13,6 +13,7 @@ const ProfileSidebar = ({ onClose }) => {
     const fetchProfileData = async () => {
       if (data.user) {
         const formattedPhoneNumber = formatPhoneNumber(data.user.phoneNumber);
+        console.log(data.user);
         setProfileData({
           ...data.user,
           phoneNumber: formattedPhoneNumber,
@@ -35,6 +36,7 @@ const ProfileSidebar = ({ onClose }) => {
   const handleLogout = async () => {
     try {
       await signOut();
+      console.log("Logged out successfully");
     } catch (error) {
       console.error("Error logging out:", error);
     }

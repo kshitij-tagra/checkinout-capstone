@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link"; // Import Link from next/link
 import Footer from "../../components/Footer";
 import TopBar from "../../components/TopBar";
-import Navbar from "../../components/Navbar";
+import NavBar from "../../components/NavBar";
 import CheckIn from "../../functionality/CheckIn";
 import CheckOut from "../../functionality/CheckOut";
 import Audit from "../../functionality/Audit";
@@ -169,7 +170,7 @@ const Privacy = () => {
   return (
     <div className="flex flex-col min-h-screen relative">
       <TopBar />
-      <Navbar
+      <NavBar
         setCurrentView={setCurrentView}
         toggleSidebar={toggleSidebar}
         toggleDropdown={toggleDropdown}

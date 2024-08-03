@@ -1,6 +1,6 @@
 import React from "react";
 
-const Navbar = ({
+const NavBar = ({
   setCurrentView,
   toggleSidebar,
   toggleDropdown,
@@ -79,4 +79,4 @@ const Navbar = ({
   </div>
 );
 
-export default Navbar;
+export default NavBar;

@@ -10,12 +10,11 @@ const EquipmentAuditForm = () => {
     endCount: 0,
   });
   const [cuffData, setCuffData] = useState({ startCount: 0, endCount: 0 });
-  const [vestData, setVestData] = useState({ startCount: 0, endCount: 0 });
-  const [earplugsData, setEarplugsData] = useState({ startCount: 0, endCount: 0 });
 
   useEffect(() => {
     async function fetchCheckedOutGuards() {
       const res = await getDocs(collection(db, "checkedOutGuards"));
+      console.log(res.docs);
       const a = res.docs.map((doc) => ({
         id: doc.data().id,
         borrowedItems: doc.data().checkInData.borrowedItems,
@@ -25,14 +24,10 @@ const EquipmentAuditForm = () => {
       let radioStart = 0;
       let camStart = 0;
       let cuffStart = 0;
-      let vestStart = 0;
-      let earplugsStart = 0;
 
       let radioEnd = 0;
       let camEnd = 0;
       let cuffEnd = 0;
-      let vestEnd = 0;
-      let earplugsEnd = 0;
 
       a.forEach((rec) => {
         if (rec.borrowedItems.radio === "true") {
@@ -44,12 +39,6 @@ const EquipmentAuditForm = () => {
         if (rec.borrowedItems.cuff === "true") {
           cuffStart++;
         }
-        if (rec.borrowedItems.vest === "true") {
-          vestStart++;
-        }
-        if (rec.borrowedItems.earplugs === "true") {
-          earplugsStart++;
-        }
 
         if (rec.returnReport.radio === "true") {
           radioEnd++;
@@ -60,19 +49,11 @@ const EquipmentAuditForm = () => {
         if (rec.returnReport.cuff === "true") {
           cuffEnd++;
         }
-        if (rec.returnReport.vest === "true") {
-          vestEnd++;
-        }
-        if (rec.returnReport.earplugs === "true") {
-          earplugsEnd++;
-        }
       });
 
       setRadioData({ startCount: radioStart, endCount: radioEnd });
       setCuffData({ startCount: cuffStart, endCount: cuffEnd });
       setCamsatData({ startCount: camStart, endCount: camEnd });
-      setVestData({ startCount: vestStart, endCount: vestEnd });
-      setEarplugsData({ startCount: earplugsStart, endCount: earplugsEnd });
     }
     fetchCheckedOutGuards();
   }, []);
@@ -107,16 +88,6 @@ const EquipmentAuditForm = () => {
               label: "Hand Cuffs",
               startCount: cuffData.startCount,
               endCount: cuffData.endCount,
-            },
-            {
-              label: "Vest",
-              startCount: vestData.startCount,
-              endCount: vestData.endCount,
-            },
-            {
-              label: "Earplugs",
-              startCount: earplugsData.startCount,
-              endCount: earplugsData.endCount,
             },
           ].map(({ label, startCount, endCount }) => (
             <tr key={label}>

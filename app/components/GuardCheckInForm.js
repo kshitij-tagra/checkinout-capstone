@@ -2,12 +2,7 @@ import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../_utils/firebase";
 
-const GuardCheckInForm = ({
-  guard,
-  onCheckInFormSubmit,
-  onCancel,
-  isSubmitting,
-}) => {
+const GuardCheckInForm = ({ guard, onCheckInFormSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
     securityLicense: "",
     notebook: "",
@@ -90,6 +85,8 @@ const GuardCheckInForm = ({
     if (formData.ppctTrained === "yes" && formData.cuffNumber === "") {
       validationErrors.cuffNumber = "Please enter this field.";
     }
+
+    console.log(Object.keys(validationErrors));
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -366,9 +363,8 @@ const GuardCheckInForm = ({
           <button
             type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            disabled={isSubmitting}
           >
-            {isSubmitting ? "Submitting..." : "Submit"}
+            Submit
           </button>
         </div>
       </form>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Footer from "./Footer";
 import ProfileSidebar from "./ProfileSidebar";
 import TopBar from "./TopBar";
-import Navbar from "./Navbar";
+import NavBar from "./NavBar";
 import CheckIn from "../functionality/CheckIn";
 import CheckOut from "../functionality/CheckOut";
 import Audit from "../functionality/Audit";
@@ -41,7 +41,7 @@ const Layout = ({ children }) => {
     <div className="flex flex-col min-h-screen">
       <TopBar />
 
-      <Navbar
+      <NavBar
         setCurrentView={setCurrentView}
         toggleSidebar={toggleSidebar}
         toggleDropdown={toggleDropdown}

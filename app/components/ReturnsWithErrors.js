@@ -4,7 +4,6 @@ import { db } from "../_utils/firebase";
 
 const ReturnsWithErrors = () => {
   const [faultyReturns, setFaultyReturns] = useState([]);
-
   useEffect(() => {
     async function fetchFaultyReturns() {
       const res = await getDocs(collection(db, "checkedOutErrors"));
@@ -22,45 +21,111 @@ const ReturnsWithErrors = () => {
     fetchFaultyReturns();
   }, []);
 
-  const renderRows = () => {
-    const items = ["radio", "camsat", "cuff", "vest", "earplugs"];
-    const rows = faultyReturns.map((f) => {
-      const notReturnedItems = items.filter(
-        (item) =>
-          f.borrowedItems[item] === "true" && f.errorsInReturn[item] !== "true"
-      );
-      return (
-        <tr key={f.faultId}>
-          <td className="py-2 border-2 border-neutral-400 text-center">
-            {f.guard.name} (#{f.guard.corpsID})
-          </td>
-          <td className="py-2 border-2 border-neutral-400 text-center">
-            {notReturnedItems.length > 0
-              ? notReturnedItems
-                  .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
-                  .join(", ")
-              : "All Returned"}
-          </td>
-        </tr>
-      );
-    });
-    return rows;
-  };
-
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 mx-auto">
-      <table className="w-full">
+      <table className="w-full ">
         <thead>
           <tr>
-            <th className="text-center py-2 border-2 border-neutral-400">
+            <th className="text-center py-2 w-2/12 border-2 border-neutral-400">
               Guard
             </th>
-            <th className="text-center py-2 border-2 border-neutral-400">
-              Not Returned Equipment
+            <th className="text-center py-2 w-1/12 border-2 border-neutral-400">
+              Radio
+            </th>
+            <th className="text-center py-2 w-1/12 border-2 border-neutral-400">
+              CAMSAT
+            </th>
+            <th className="text-center py-2 w-1/12 border-2 border-neutral-400">
+              Hand Cuffs
+            </th>
+            <th className="text-center py-2 w-1/12 border-2 border-neutral-400">
+              Vest
+            </th>
+            <th className="text-center py-2 w-1/12 border-2 border-neutral-400">
+              Earplugs
             </th>
           </tr>
         </thead>
-        <tbody>{renderRows()}</tbody>
+
+        <tbody>
+          {faultyReturns.map((f) => {
+            return (
+              <tr key={f.faultId}>
+                <td className="py-2 border-2 border-neutral-400 text-center">
+                  {f.guard.name} (#{f.guard.corpsID})
+                </td>
+                <td
+                  className={
+                    f.errorsInReturn.radio === "true"
+                      ? "text-green-400 border-2 border-neutral-400 text-center"
+                      : "text-red-500 border-2 border-neutral-400 text-center"
+                  }
+                >
+                  {f.errorsInReturn.radio === "true"
+                    ? "Returned"
+                    : "Not Returned"}
+                </td>
+                <td
+                  className={
+                    f.errorsInReturn.camsat === "true"
+                      ? "text-green-400 border-2 border-neutral-400 text-center"
+                      : "text-red-500 border-2 border-neutral-400 text-center"
+                  }
+                >
+                  {f.errorsInReturn.camsat === "true"
+                    ? "Returned"
+                    : "Not Returned"}
+                </td>
+                <td
+                  className={
+                    f.borrowedItems["cuff"] === "true"
+                      ? f.errorsInReturn.cuff === "true"
+                        ? "text-green-400 border-2 border-neutral-400 text-center"
+                        : "text-red-500 border-2 border-neutral-400 text-center"
+                      : "border-2 border-neutral-400 text-center"
+                  }
+                >
+                  {f.borrowedItems.cuff === "true"
+                    ? f.errorsInReturn.cuff === "true"
+                      ? "Returned"
+                      : "Not Returned"
+                    : "-"}
+                </td>
+                {/* working on this */}
+                <td
+                  className={
+                    f.borrowedItems["vest"] === "true"
+                      ? f.errorsInReturn.vest === "true"
+                        ? "text-green-400 border-2 border-neutral-400 text-center"
+                        : "text-red-500 border-2 border-neutral-400 text-center"
+                      : ""
+                  }
+                >
+                  {f.borrowedItems.vest === "true"
+                    ? f.errorsInReturn.vest === "true"
+                      ? "Returned"
+                      : "Not Returned"
+                    : "-"}
+                </td>
+                <td
+                  className={
+                    f.borrowedItems["earplugs"] === "true"
+                      ? f.errorsInReturn.earplugs === "true"
+                        ? "text-green-400 border-2 border-neutral-400 text-center"
+                        : "text-red-500 border-2 border-neutral-400 text-center"
+                      : ""
+                  }
+                >
+                  {f.borrowedItems.earplugs === "true"
+                    ? f.errorsInReturn.earplugs === "true"
+                      ? "Returned"
+                      : "Not Returned"
+                    : "-"}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     </div>
   );
