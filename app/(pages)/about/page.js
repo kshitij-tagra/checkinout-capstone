@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Footer from "../../components/Footer";
 import TopBar from "../../components/TopBar";
-import NavBar from "../../components/NavBar";
+import Navbar from "../../components/Navbar";
 import CheckIn from "../../functionality/CheckIn";
 import CheckOut from "../../functionality/CheckOut";
 import Audit from "../../functionality/Audit";
@@ -125,7 +125,7 @@ const About = () => {
             </section>
             <section className="flex justify-center mt-6">
               <button
-                onClick={() => (window.location.href = "/pages/homepage")}
+                onClick={() => (window.location.href = "/")}
                 className="block px-4 py-2 font-bold bg-blue-600 text-white rounded hover:bg-blue-700"
               >
                 Back to Homepage
@@ -139,7 +139,7 @@ const About = () => {
   return (
     <div className="flex flex-col min-h-screen relative">
       <TopBar />
-      <NavBar
+      <Navbar
         setCurrentView={setCurrentView}
         toggleSidebar={toggleSidebar}
         toggleDropdown={toggleDropdown}

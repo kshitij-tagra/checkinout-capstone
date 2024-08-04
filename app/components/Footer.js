@@ -9,24 +9,24 @@ const Footer = () => {
         </div>
         <div className="flex flex-col md:flex-row">
           <Link
-            href="../terms"
+            href="/../terms"
             className="mb-2 md:mb-0 md:mr-10 hover:underline"
           >
             Terms & Conditions
           </Link>
           <Link
-            href="../privacy"
+            href="/../privacy"
             className="mb-2 md:mb-0 md:mr-10 hover:underline"
           >
             Privacy Policy
           </Link>
           <Link
-            href="../about"
+            href="/../about"
             className="mb-2 md:mb-0 md:mr-10 hover:underline"
           >
             About Us
           </Link>
-          <Link href="../contact" className="hover:underline">
+          <Link href="/../contact" className="hover:underline">
             Contact Us
           </Link>
         </div>

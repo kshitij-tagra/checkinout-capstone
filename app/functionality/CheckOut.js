@@ -3,17 +3,18 @@ import GuardCheckOutForm from "../components/GuardCheckOutForm";
 import {
   addDoc,
   collection,
-  deleteDoc,
   doc,
   getDocs,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../_utils/firebase";
+import ConfirmationBox from "../components/ConfirmationBox";
 
 const CheckOut = () => {
-  // Temporary mock data for signed-in guards
   const [checkedInData, setCheckedInData] = useState([]);
   const [selectedCheckIn, setSelectedCheckIn] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [checkedOutGuard, setCheckedOutGuard] = useState(null);
 
   async function fetchCheckedInGuards() {
     const res = await getDocs(collection(db, "checkedInGuards"));
@@ -21,24 +22,24 @@ const CheckOut = () => {
       id: doc.id,
       ...doc.data(),
     }));
-    setCheckedInData(allCheckedInGuards);
+    // Filter out guards who are checked out
+    const activeCheckedInGuards = allCheckedInGuards.filter(
+      (guard) => !guard.checkedOut
+    );
+    setCheckedInData(activeCheckedInGuards);
   }
 
   useEffect(() => {
     fetchCheckedInGuards();
   }, []);
 
-  // Function to handle form cancel
   const handleCancel = () => {
     setSelectedCheckIn(null);
   };
 
-  // Function to handle form submit
   const handleSubmit = async (e, returnedStuff) => {
     e.preventDefault();
     const currentCheckIn = selectedCheckIn;
-    // Handle guard sign-out logic here
-
     const isFaultyCheckOut =
       Object.values(returnedStuff).find((val) => val === "false") === undefined
         ? false
@@ -51,15 +52,12 @@ const CheckOut = () => {
     }
 
     if (!isFaultyCheckOut) {
-      // everything was returned at time of checkout
       await makeEquipmentAvailable(currentCheckIn.selectedCamsetID);
       await makeEquipmentAvailable(currentCheckIn.selectedRadioID);
       if (currentCheckIn.selectedCuffID) {
         await makeEquipmentAvailable(currentCheckIn.selectedCuffID);
       }
     } else {
-      console.log("Stuff returned", returnedStuff);
-      // make the returned items available
       if (returnedStuff.camsat === "true") {
         await makeEquipmentAvailable(currentCheckIn.selectedCamsetID);
       }
@@ -70,25 +68,33 @@ const CheckOut = () => {
         await makeEquipmentAvailable(currentCheckIn.selectedCuffID);
       }
 
-      // create a report that the return was faulty
-
       await addDoc(collection(db, "checkedOutErrors"), {
         ...currentCheckIn,
         returnErrors: returnedStuff,
       });
     }
 
-    // checkout the guard
     await addDoc(collection(db, "checkedOutGuards"), {
       checkInData: currentCheckIn,
       guard: currentCheckIn.guard,
       returnReport: returnedStuff,
     });
 
-    await deleteDoc(doc(db, "checkedInGuards", currentCheckIn.id));
+    // Update the checkedInGuard document to indicate the guard is checked out
+    await updateDoc(doc(db, "checkedInGuards", currentCheckIn.id), {
+      checkedOut: true,
+    });
+
+    setCheckedOutGuard(currentCheckIn.guard);
+    setShowPopup(true);
 
     setSelectedCheckIn(null);
     fetchCheckedInGuards();
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+    setCheckedOutGuard(null);
   };
 
   return (
@@ -115,24 +121,29 @@ const CheckOut = () => {
           <option value={""} disabled>
             Choose Guard to Check Out
           </option>
-          {checkedInData.map((checkIn) => {
-            console.log(checkIn);
-            return (
-              <option key={checkIn.id} value={checkIn.id}>
-                {checkIn.guard.name} (#{checkIn.guard.corpsID})
-              </option>
-            );
-          })}
+          {checkedInData.map((checkIn) => (
+            <option key={checkIn.id} value={checkIn.id}>
+              {checkIn.guard.name} (#{checkIn.guard.corpsID})
+            </option>
+          ))}
         </select>
       </div>
 
-      {/* Guard Sign-Out Form */}
       {selectedCheckIn && (
         <GuardCheckOutForm
           guard={selectedCheckIn.guard}
           borrowedCuffs={selectedCheckIn.selectedCuffID ? true : false}
           onSubmit={handleSubmit}
           onCancel={handleCancel}
+        />
+      )}
+
+      {showPopup && checkedOutGuard && (
+        <ConfirmationBox
+          guard={checkedOutGuard}
+          onClose={closePopup}
+          heading="Check Out Successful"
+          message={`"${checkedOutGuard.name} (#${checkedOutGuard.corpsID})" has been checked out!`}
         />
       )}
     </div>

@@ -10,24 +10,24 @@ import { useEffect, useState } from "react";
 import GuardCheckInForm from "../components/GuardCheckInForm";
 import GuardList from "../components/GuardList";
 import GuardSearch from "../components/GuardSearch";
+import ConfirmationBox from "../components/ConfirmationBox";
 
 const CheckIn = () => {
   const [guards, setGuards] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGuard, setSelectedGuard] = useState(null);
+  const [guardDetails, setGuardDetails] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const db = getFirestore();
 
-  // Function to fetch guards from Firestore based on search query
   const fetchGuards = async () => {
     const guardCollection = collection(db, "guards");
-
     const guardSnapshot = await getDocs(guardCollection);
     const guardList = guardSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-
-    // Filter guards based on case-insensitive search query
     const filteredGuards = guardList.filter((guard) => {
       const nameMatch = guard.name
         .toLowerCase()
@@ -35,33 +35,26 @@ const CheckIn = () => {
       const corpsIDMatch = guard.corpsID.toString().includes(searchQuery);
       return nameMatch || corpsIDMatch;
     });
-
     setGuards(filteredGuards);
   };
 
-  // Function to handle search query change
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  // Function to handle guard selection
   const handleGuardSelect = (guard) => {
     setSelectedGuard(guard);
-    setSearchQuery(""); // Clear the search bar
+    setSearchQuery("");
   };
 
-  // Function to handle form cancel
   const handleCancel = () => {
     setSelectedGuard(null);
   };
 
-  // Function to handle form submit
   const handleSubmit = async (checkInData) => {
-    // Handle guard sign-in logic here
-    console.log("Guard signed in:", {
-      guard: selectedGuard,
-      ...checkInData,
-    });
+    if (isSubmitting) return; // Prevent multiple submissions
+    setIsSubmitting(true);
+
     await addDoc(collection(db, "checkedInGuards"), {
       guard: selectedGuard,
       ...checkInData,
@@ -73,13 +66,11 @@ const CheckIn = () => {
         earplugs: checkInData.casualEarplugs === "yes" ? "true" : "false",
       },
     });
-    // if cuffs were given then make them unavailable
     if (checkInData.selectedCuffID) {
       await updateDoc(doc(db, "equipments", checkInData.selectedCuffID), {
         available: false,
       });
     }
-
     await updateDoc(doc(db, "equipments", checkInData.selectedCamsetID), {
       available: false,
     });
@@ -87,12 +78,12 @@ const CheckIn = () => {
       available: false,
     });
 
-    console.log("CheckedIN");
-
+    setGuardDetails(selectedGuard);
     setSelectedGuard(null);
+    setShowPopup(true);
+    setIsSubmitting(false); // Re-enable submission for future check-ins
   };
 
-  // Fetch guards whenever the search query changes
   useEffect(() => {
     if (searchQuery) {
       fetchGuards();
@@ -101,29 +92,36 @@ const CheckIn = () => {
     }
   }, [searchQuery]);
 
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <div className="p-4 w-full">
       <h1 className="text-2xl font-bold text-center mb-4">
         - Check In Guard -
       </h1>
-
-      {/* Search Bar */}
       <GuardSearch
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
       />
-
-      {/* Guard List */}
       {searchQuery && !selectedGuard && (
         <GuardList guards={guards} onSelectGuard={handleGuardSelect} />
       )}
-
-      {/* Guard Sign-In Form */}
       {selectedGuard && (
         <GuardCheckInForm
           guard={selectedGuard}
           onCheckInFormSubmit={handleSubmit}
           onCancel={handleCancel}
+          isSubmitting={isSubmitting} // Pass isSubmitting to the form
+        />
+      )}
+      {showPopup && (
+        <ConfirmationBox
+          guard={guardDetails}
+          onClose={closePopup}
+          heading="Check In Successful"
+          message={`"${guardDetails.name} (#${guardDetails.corpsID})" has been checked in!`}
         />
       )}
     </div>

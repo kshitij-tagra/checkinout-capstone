@@ -27,9 +27,7 @@ const GuardCheckOutForm = ({ guard, borrowedCuffs, onSubmit, onCancel }) => {
     }));
   }
 
-  useEffect(() => {
-    console.log(returnedStuff);
-  }, [returnedStuff]);
+  useEffect(() => {}, [returnedStuff]);
 
   return (
     <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full sm:w-3/4 mx-auto">
