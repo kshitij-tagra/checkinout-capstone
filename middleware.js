@@ -6,6 +6,44 @@ export default auth((req) => {
     if (req.nextUrl.pathname === "/homepage.jpg") {
         return NextResponse.next();
     }
+    if (req.nextUrl.pathname === "/background.jpg") {
+        return NextResponse.next();
+    }
+    if (req.nextUrl.pathname === "/logo.png") {
+        return NextResponse.next();
+    }
+    if (req.nextUrl.pathname === "/pdf.jpg") {
+        return NextResponse.next();
+    }
+    if (req.nextUrl.pathname === "/profile.png") {
+        return NextResponse.next();
+    }
+    if (req.nextUrl.pathname === "/pic-kshitij.png") {
+        return NextResponse.next();
+    }
+    if (req.nextUrl.pathname === "/pic-jaskaran.png") {
+        return NextResponse.next();
+    }
+    if (req.nextUrl.pathname === "/pic-jagdeep.jpg") {
+        return NextResponse.next();
+    }
+    if (req.nextUrl.pathname === "/pic-jashanjot.jpg") {
+        return NextResponse.next();
+    }
+
+    // viewing static pages when logged out
+    if (!req.auth && req.nextUrl.pathname === "/about") {
+        return NextResponse.next();
+    }
+    if (!req.auth && req.nextUrl.pathname === "/contact") {
+        return NextResponse.next();
+    }
+    if (!req.auth && req.nextUrl.pathname === "/privacy") {
+        return NextResponse.next();
+    }
+    if (!req.auth && req.nextUrl.pathname === "/terms") {
+        return NextResponse.next();
+    }
 
     // if is not loggedIn and is also not at /login, then push to login
     if (!req.auth && req.nextUrl.pathname !== "/login") {
@@ -18,6 +56,7 @@ export default auth((req) => {
         return Response.redirect(req.nextUrl.origin);
     }
 });
+
 export const config = {
     matcher: [
         "/((?!api|_next/static|_next/image|favicon.ico|public/images).*)",
