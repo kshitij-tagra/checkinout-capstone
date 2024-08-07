@@ -65,13 +65,13 @@ const Navbar = ({
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
           <button className="block py-2 px-4 text-gray-800 hover:bg-gray-200 w-full text-left focus:outline-none">
-            Sign In Report
+            Finalize Check In Report
           </button>
           <button className="block py-2 px-4 text-gray-800 hover:bg-gray-200 w-full text-left focus:outline-none">
-            Sign Out Report
+            Finalize Check Out Report
           </button>
           <button className="block py-2 px-4 text-gray-800 hover:bg-gray-200 w-full text-left focus:outline-none">
-            Audit Report
+            Finalize Audit Report
           </button>
         </div>
       )}
