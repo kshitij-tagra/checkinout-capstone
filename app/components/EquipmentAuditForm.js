@@ -11,7 +11,10 @@ const EquipmentAuditForm = () => {
   });
   const [cuffData, setCuffData] = useState({ startCount: 0, endCount: 0 });
   const [vestData, setVestData] = useState({ startCount: 0, endCount: 0 });
-  const [earplugsData, setEarplugsData] = useState({ startCount: 0, endCount: 0 });
+  const [earplugsData, setEarplugsData] = useState({
+    startCount: 0,
+    endCount: 0,
+  });
 
   useEffect(() => {
     async function fetchCheckedOutGuards() {

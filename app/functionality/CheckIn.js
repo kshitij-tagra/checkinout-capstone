@@ -28,13 +28,28 @@ const CheckIn = () => {
       id: doc.id,
       ...doc.data(),
     }));
+
+    // Fetch checked-in guards
+    const checkedInCollection = collection(db, "checkedInGuards");
+    const checkedInSnapshot = await getDocs(checkedInCollection);
+    const checkedInList = checkedInSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    const checkedInGuardIds = checkedInList
+      .filter((guard) => !guard.checkedOut) // Filter out guards who are not checked out
+      .map((guard) => guard.guard.id);
+
     const filteredGuards = guardList.filter((guard) => {
       const nameMatch = guard.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
       const corpsIDMatch = guard.corpsID.toString().includes(searchQuery);
-      return nameMatch || corpsIDMatch;
+      const notCheckedIn = !checkedInGuardIds.includes(guard.id);
+      return (nameMatch || corpsIDMatch) && notCheckedIn;
     });
+
     setGuards(filteredGuards);
   };
 
@@ -58,6 +73,7 @@ const CheckIn = () => {
     await addDoc(collection(db, "checkedInGuards"), {
       guard: selectedGuard,
       ...checkInData,
+      checkedOut: false,
       borrowedItems: {
         camsat: checkInData.camsatNumber ? "true" : "false",
         radio: checkInData.radioNumber ? "true" : "false",

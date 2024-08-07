@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-const GuardCheckOutForm = ({ guard, borrowedCuffs, onSubmit, onCancel }) => {
+const GuardCheckOutForm = ({
+  guard,
+  borrowedCuffs,
+  onSubmit,
+  onCancel,
+  isSubmitting,
+}) => {
   const [returnedStuff, setReturnedStuff] = useState(
     borrowedCuffs
       ? {
@@ -216,8 +222,9 @@ const GuardCheckOutForm = ({ guard, borrowedCuffs, onSubmit, onCancel }) => {
           <button
             type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            disabled={isSubmitting}
           >
-            Submit
+            {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>

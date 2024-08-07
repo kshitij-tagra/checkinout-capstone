@@ -15,6 +15,7 @@ const CheckOut = () => {
   const [selectedCheckIn, setSelectedCheckIn] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [checkedOutGuard, setCheckedOutGuard] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function fetchCheckedInGuards() {
     const res = await getDocs(collection(db, "checkedInGuards"));
@@ -39,6 +40,9 @@ const CheckOut = () => {
 
   const handleSubmit = async (e, returnedStuff) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent multiple submissions
+    setIsSubmitting(true);
+
     const currentCheckIn = selectedCheckIn;
     const isFaultyCheckOut =
       Object.values(returnedStuff).find((val) => val === "false") === undefined
@@ -82,13 +86,14 @@ const CheckOut = () => {
 
     // Update the checkedInGuard document to indicate the guard is checked out
     await updateDoc(doc(db, "checkedInGuards", currentCheckIn.id), {
-      checkedOut: true,
+      checkedOut: true, // Ensure this is correctly updating
     });
 
     setCheckedOutGuard(currentCheckIn.guard);
     setShowPopup(true);
 
     setSelectedCheckIn(null);
+    setIsSubmitting(false);
     fetchCheckedInGuards();
   };
 
@@ -107,7 +112,7 @@ const CheckOut = () => {
         <select
           className="w-full max-w-md p-3 mb-4 border border-gray-300 rounded"
           id="guardSelect"
-          value={selectedCheckIn === null ? "" : selectedCheckIn}
+          value={selectedCheckIn ? selectedCheckIn.id : ""}
           onChange={(e) => {
             if (e.target.value !== "") {
               setSelectedCheckIn(
@@ -135,6 +140,7 @@ const CheckOut = () => {
           borrowedCuffs={selectedCheckIn.selectedCuffID ? true : false}
           onSubmit={handleSubmit}
           onCancel={handleCancel}
+          isSubmitting={isSubmitting} // Pass isSubmitting to the form if needed
         />
       )}
 
