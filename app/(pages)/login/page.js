@@ -44,10 +44,10 @@ export default function Page() {
             </div>
             {/* Paragraph text positioned just below LoginForm */}
             <div
-              className="mt-2 text-center max-w-xs text-white md:hidden p-3 rounded-lg"
+              className="mt-2 text-center max-w-sm text-white md:hidden p-3 rounded-lg"
               style={{ width: "100%" }}
             >
-              <p className="text-sm my-4">
+              <p className="text-base my-4">
                 CheckInOut is your comprehensive solution for managing security
                 guard check-ins and equipment. Our intuitive platform simplifies
                 the process, allowing you to streamline your security operations
