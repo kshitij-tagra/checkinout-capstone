@@ -5,7 +5,6 @@ import { db } from "./firebase";
 export async function validate(email, password) {
   const res = await getDoc(doc(db, "supervisors", email));
   const user = res.data();
-  // console.log(user);
 
   if (!user) {
     return { success: false, message: "invalid credentials" };

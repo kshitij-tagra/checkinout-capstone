@@ -23,7 +23,6 @@ const Navbar = ({ setCurrentView, toggleSidebar, currentView }) => {
       // Delete data from Firestore
       await deleteAllDataFromFirestore();
 
-      console.log("Records cleared and Excel sheet generated.");
     } catch (error) {
       console.error("Error exporting data:", error);
     }
