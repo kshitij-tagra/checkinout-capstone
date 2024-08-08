@@ -42,7 +42,7 @@ const GuardCheckOutForm = ({
         <table className="w-full">
           <tbody>
             <tr>
-              <td className="py-2 align-top">CAMSAT:</td>
+              <td className="py-2 align-top">CAMSAT & Pouch:</td>
               <td className="py-2">
                 <div className="flex">
                   <div className="mr-4 w-1/2">
@@ -104,7 +104,7 @@ const GuardCheckOutForm = ({
 
             {borrowedCuffs && (
               <tr>
-                <td className="py-2 align-top">CUFF #:</td>
+                <td className="py-2 align-top">Hand Cuffs:</td>
                 <td className="py-2">
                   <div className="flex">
                     <div className="mr-4 w-1/2">

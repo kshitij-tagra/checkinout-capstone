@@ -143,8 +143,6 @@ const Contact = () => {
       <Navbar
         setCurrentView={setCurrentView}
         toggleSidebar={toggleSidebar}
-        toggleDropdown={toggleDropdown}
-        isDropdownOpen={isDropdownOpen}
         currentView={currentView}
       />
       <div className="flex flex-1 relative">

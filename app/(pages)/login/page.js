@@ -79,7 +79,12 @@ export default function Page() {
         </div>
       </div>
 
-      <Footer />
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white p-4 relative z-10 text-sm">
+        <div className="mb-4 md:mb-0 text-center">
+          &copy; {new Date().getFullYear()} CheckInOut. All Rights Reserved.
+        </div>
+      </footer>
     </div>
   );
 }

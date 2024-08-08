@@ -95,9 +95,9 @@ const Terms = () => {
               </h2>
               <p>
                 These Terms will be governed by and interpreted in accordance
-                with the laws of the State of [Your State], and you submit to
+                with the laws of the State of Alberta, and you submit to
                 the non-exclusive jurisdiction of the state and federal courts
-                located in [Your State] for the resolution of any disputes.
+                located in Alberta for the resolution of any disputes.
               </p>
             </section>
             <section className="flex justify-center mt-6">
@@ -119,8 +119,6 @@ const Terms = () => {
       <Navbar
         setCurrentView={setCurrentView}
         toggleSidebar={toggleSidebar}
-        toggleDropdown={toggleDropdown}
-        isDropdownOpen={isDropdownOpen}
         currentView={currentView}
       />
       <div className="flex flex-1 relative">

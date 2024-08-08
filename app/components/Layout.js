@@ -9,7 +9,6 @@ import Audit from "../functionality/Audit";
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentView, setCurrentView] = useState("CheckIn");
 
   const toggleSidebar = () => {
@@ -18,10 +17,6 @@ const Layout = ({ children }) => {
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
-  };
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prevState) => !prevState);
   };
 
   const renderContent = () => {
@@ -44,8 +39,6 @@ const Layout = ({ children }) => {
       <Navbar
         setCurrentView={setCurrentView}
         toggleSidebar={toggleSidebar}
-        toggleDropdown={toggleDropdown}
-        isDropdownOpen={isDropdownOpen}
         currentView={currentView}
       />
 

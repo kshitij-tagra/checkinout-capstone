@@ -138,16 +138,6 @@ const EquipmentAuditForm = () => {
           ))}
         </tbody>
       </table>
-
-      {/* Form Buttons */}
-      <div className="flex justify-end space-x-4 mt-4">
-        <button
-          type="button"
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          Report
-        </button>
-      </div>
     </div>
   );
 };
