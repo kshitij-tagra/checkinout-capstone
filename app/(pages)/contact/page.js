@@ -31,17 +31,17 @@ const Contact = () => {
       github: "https://github.com/kshitij-tagra",
       instagram: "https://www.instagram.com/kshitij.tagra/",
       description:
-        "Kshitij oversees all security operations at our company. With a keen focus on frontend development, he ensures our security systems are intuitive and user-friendly.",
-      imageUrl: "/pic-kshitij.png",
+        "Kshitij leads our project with a keen eye for detail, ensuring seamless integration of our front-end designs. His leadership and technical skills drive our project's success.",
+      imageUrl: "/pic-kshitij.jpg",
     },
     {
       name: "Jagdeep Kaur Baryar",
-      role: "Database Developer",
+      role: "Backend Developer",
       email: "jagdeepkaur.baryar@edu.sait.ca",
       github: "https://github.com/JAGDEEP-BARYAR",
       instagram: "https://www.instagram.com/jagdeep.baryar.7/",
       description:
-        "Jagdeep specializes in database management for our security operations. Her expertise is crucial in maintaining the integrity and performance of our data systems.",
+        "Jagdeep specializes in crafting robust backend solutions. Her expertise ensures that our application is secure, efficient, and scalable.",
       imageUrl: "/pic-jagdeep.jpg",
     },
     {
@@ -51,18 +51,18 @@ const Contact = () => {
       github: "https://github.com/Jashan2510",
       instagram: "https://www.instagram.com/jshn1919/",
       description:
-        "Jashanjot handles both the backend systems and the user interface design. His dual expertise ensures seamless integration of our security solutions.",
+        "Jashanjot blends backend functionality with user-centered design, making sure that our application is not only powerful but also intuitive and easy to use.",
       imageUrl: "/pic-jashanjot.jpg",
     },
     {
       name: "Jaskaran Singh",
-      role: "UI/UX Developer & Database Developer",
+      role: "Database Developer & UI/UX Developer",
       email: "jaskaran.singh08@edu.sait.ca",
       github: "https://github.com/Jaskaran-singh1",
       instagram: "https://www.instagram.com/jaskaran5911.jpr/",
       description:
-        "Jaskaran is adept in both UI/UX design and database development. He plays a pivotal role in ensuring that our applications are both effective and efficient.",
-      imageUrl: "/pic-jaskaran.png",
+        "Jaskaran brings our user interface to life while managing our database. His dual expertise ensures that the user experience is both engaging and data-driven.",
+      imageUrl: "/pic-jaskaran.jpg",
     },
   ];
 
@@ -73,7 +73,7 @@ const Contact = () => {
         className="bg-white rounded-lg shadow-lg p-4 m-2 flex flex-col items-center justify-center w-80 h-auto min-h-[400px]"
       >
         <img
-          className="w-32 h-32 object-cover rounded-full mb-3"
+          className="w-32 h-32 object-cover rounded-full mb-3 border-black border-2"
           src={supervisor.imageUrl}
           alt={`Image of ${supervisor.name}`}
         />

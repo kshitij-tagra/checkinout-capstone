@@ -8,7 +8,7 @@ export default function Page() {
       <div
         className="absolute inset-0 z-0 bg-cover bg-center blur-sm"
         style={{
-          backgroundImage: "url('/homepage.jpg')",
+          backgroundImage: "url('/login-bg.jpg')",
         }}
       ></div>
 

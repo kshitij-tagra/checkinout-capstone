@@ -3,7 +3,7 @@ import { auth } from "./lib/auth";
 
 export default auth((req) => {
     // serving the image even if the user is not logged in
-    if (req.nextUrl.pathname === "/homepage.jpg") {
+    if (req.nextUrl.pathname === "/login-bg.jpg") {
         return NextResponse.next();
     }
 
