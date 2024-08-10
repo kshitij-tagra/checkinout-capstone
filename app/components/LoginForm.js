@@ -102,7 +102,10 @@ const LoginForm = () => {
       </div>
       {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
       <div className="flex items-center justify-end mb-6">
-        <a href="#" className="text-blue-500 hover:text-blue-700 text-sm">
+        <a
+          href="mailto:kshitij.tara@edu.sait.ca"
+          className="text-blue-500 hover:text-blue-700 text-sm"
+        >
           Forgot Password?
         </a>
       </div>
